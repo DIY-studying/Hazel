@@ -26,7 +26,7 @@ namespace Hazel
 	{
 		None = 0,
 		EventCategoryApplication		=	BIT(0),
-		EventCategoryInput					=	BIT(1),
+		EventCategoryInput				=	BIT(1),
 		EventCategoryKeyboard			=	BIT(2),
 		EventMouse								=  BIT(3),
 		EventMouseButton					=	BIT(4),
