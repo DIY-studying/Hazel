@@ -14,9 +14,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir={}
 IncludeDir["GLFW"]="Hazel/vendor/GLFW/include"
 IncludeDir["Glad"]="Hazel/vendor/glad/include"
+IncludeDir["ImGui"]="Hazel/vendor/imgui"
 
 include "Hazel/vendor/GLFW"
 include "Hazel/vendor/Glad"
+include "Hazel/vendor/imgui"
 
 project "Hazel"
    location "Hazel"
@@ -41,12 +43,15 @@ project "Hazel"
     "%{prj.name}/src",
     "%{prj.name}/vendor/spdlog/include",
     "%{IncludeDir.GLFW}",
-    "%{IncludeDir.Glad}"
+    "%{IncludeDir.Glad}",
+    "%{IncludeDir.ImGui}",
+    "%{IncludeDir.ImGui}/backends"
    }
    links
    {
     "GLFW",
     "Glad",
+    "ImGui",
     "opengl32.lib",
    }
 
@@ -59,7 +64,10 @@ project "Hazel"
    {
     "HZ_PLATFORM_WINDOWS",
     "HZ_BUILD_DLL",
-    "GLFW_INCLUDE_NONE"
+    -- diable GLFW OpneGL header
+    "GLFW_INCLUDE_NONE",
+    -- tell ImGui use custom loader(glad)
+    "IMGUI_IMPL_OPENGL_LOADER_CUSTOM", 
    }
 
    postbuildcommands
@@ -70,6 +78,10 @@ project "Hazel"
         defines {"HZ_DEBUG"}
         buildoptions "/MDd"
         symbols "On"
+    defines
+    {
+        "HZ_ENABLE_ASSERTS"
+    }
 
    filter "configurations:Release"
         defines {"HZ_REALEASE"}
@@ -104,18 +116,18 @@ project "Sandbox"
    includedirs
    {
     "Hazel/vendor/spdlog/include",
-    "Hazel/src"
+    "Hazel/src",
    }
 
 
    links
    {
-    "Hazel"
+    "Hazel",
    }
  
    defines
    {
-    "HZ_PLATFORM_WINDOWS"
+    "HZ_PLATFORM_WINDOWS",
    }
 
     filter "configurations:Debug"

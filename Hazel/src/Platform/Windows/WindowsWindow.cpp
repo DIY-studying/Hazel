@@ -48,8 +48,9 @@ namespace Hazel
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+
 		glfwMakeContextCurrent(m_Window);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);	
 		HZ_CORE_ASSERT(status, "Failed to initailize glad.");
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
@@ -142,7 +143,7 @@ namespace Hazel
 				MouseMoveEvent event(xPos, yPos);
 				data.EventCallback(event);
 			});
-	
+		
 	}
 
 	void WindowsWindow::Shutdown()
@@ -151,8 +152,8 @@ namespace Hazel
 	}
 	void WindowsWindow::OnUpdate()
 	{
-		glfwPollEvents();
 		glfwSwapBuffers(m_Window);
+		glfwPollEvents();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)

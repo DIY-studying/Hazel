@@ -19,6 +19,9 @@ namespace Hazel
 		void PushLayer(Layer* layer);
 		void PushOverlayer(Layer* overlayer);
 
+		inline static Application& GetApp() { return *s_Instance; }
+
+		inline Window& GetWindow() { return *m_Window; }
 	private:
 		bool OnWindowClose(WindowClosedEvent&);
 
@@ -26,6 +29,8 @@ namespace Hazel
 		bool m_Runing = true;
 
 		LayerStack m_LayerStack;
+	private:
+		static Application* s_Instance;
 	};
 
 	//define in client
