@@ -67,6 +67,14 @@ namespace Hazel
 				data.EventCallback(event);
 			});
 
+		glfwSetCharCallback(m_Window,
+			[](GLFWwindow* window, unsigned int keycode)
+			{
+				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+				KeyTypedEvent event(keycode);
+				data.EventCallback(event);
+			});
+
 		glfwSetWindowCloseCallback(m_Window,
 			[](GLFWwindow* window)
 			{

@@ -66,7 +66,6 @@ namespace Hazel
 			{
 				layer->OnUpdate();
 			}
-			std::cout << "123";
 			m_Window->OnUpdate();
 		};
 	}

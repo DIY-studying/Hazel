@@ -17,7 +17,8 @@ namespace Hazel
 			ss << "WindowResizeEvent: " << m_Width << "," << m_Height;
 			return ss.str();
 		}
-
+		inline unsigned int GetWidth() const { return m_Width; }
+		inline unsigned int GetHeight() const { return m_Height; }
 		EVENT_CALSS_TYPE(WindowResize)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	private:

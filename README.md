@@ -22,3 +22,9 @@ Hazel Eigen
 - ImGui 需要用宏`IMGUI_IMPL_OPENGL_LOADER_CUSTOM`告诉他使用自定义的loader(glad)
 
 - 没有使用`gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)`正确初始化glad（在'glfwMakeContextCurrentz'之后）。
+
+## 16 ImGui Events
+
+ImGui的输入过时了，被替换为新的API，这篇[文章](https://github.com/ocornut/imgui/issues/4921)介绍了API变化。
+
+他带着我们实现了事件，但这已经在imgui_impl_glfw.h文件实现并声明了，并且我还而外声明了从GLFW键码到ImGui的转换的方法声明。

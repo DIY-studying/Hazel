@@ -26,13 +26,28 @@ namespace Hazel
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyPressedEvent" << m_KeyCode << "(" << m_RepeatCount << " repeat)";
+			ss << "KeyPressedEvent: " << m_KeyCode << "(" << m_RepeatCount << " repeat)";
 			return ss.str();
 		}
 
 		EVENT_CALSS_TYPE(KeyPressed)
 	private:
 		int m_RepeatCount;
+	};
+	class HAZEL_API KeyTypedEvent :public KeyEvent
+	{
+	public:
+		KeyTypedEvent(int keycode) :KeyEvent(keycode) {}
+
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvent: " << m_KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CALSS_TYPE(KeyTyped)
 	};
 
 	class HAZEL_API KeyReleasedEvent : public KeyEvent
