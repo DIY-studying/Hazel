@@ -34,3 +34,7 @@ ImGui的输入过时了，被替换为新的API，这篇[文章](https://github.
 - 改变buildoption为可以直接设置项目的/MDD和/MD，这更加方便且不会出现警告。参考这篇[文章](https://github.com/TheCherno/Hazel/issues/15)
 
 - 设置startproject 和 define HZ_DEBUG
+
+## 18 pull request
+
+对postcommand进行了修改，了解了一些不曾知道的事，但premake的API发生了改变，有些不同，这篇(文章)[https://github.com/TheCherno/Hazel/issues/9]有相应的讨论。
