@@ -5,6 +5,7 @@
 
 #include "Log.h"
 #include "glad/glad.h"
+#include "Input.h"
 
 namespace Hazel
 {
@@ -60,6 +61,9 @@ namespace Hazel
 	{
 		while (m_Runing)
 		{
+			auto [x, y] = Input::GetMousePosition();
+			HZ_INFO("MousePos: {0},{1}.",x,y);
+
 			glClearColor(0,0,0,1);
 			glClear(GL_COLOR_BUFFER_BIT);
 			for (Layer* layer:m_LayerStack)

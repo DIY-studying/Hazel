@@ -38,3 +38,7 @@ ImGui的输入过时了，被替换为新的API，这篇[文章](https://github.
 ## 18 pull request
 
 对postcommand进行了修改，了解了一些不曾知道的事，但premake的API发生了改变，有些不同，这篇(文章)[https://github.com/TheCherno/Hazel/issues/9]有相应的讨论。
+
+## 19 input poll
+
+它的代码有点错误，并且不会及时返回错误，但也不错。这个错误是对GLFW的state返回的值不是很清楚，他是在凭感觉。
