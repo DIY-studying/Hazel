@@ -28,3 +28,9 @@ Hazel Eigen
 ImGui的输入过时了，被替换为新的API，这篇[文章](https://github.com/ocornut/imgui/issues/4921)介绍了API变化。
 
 他带着我们实现了事件，但这已经在imgui_impl_glfw.h文件实现并声明了，并且我还而外声明了从GLFW键码到ImGui的转换的方法声明。
+
+## 17 Github and Hazel
+
+- 改变buildoption为可以直接设置项目的/MDD和/MD，这更加方便且不会出现警告。参考这篇[文章](https://github.com/TheCherno/Hazel/issues/15)
+
+- 设置startproject 和 define HZ_DEBUG
