@@ -6,6 +6,7 @@
 #include "Log.h"
 #include "glad/glad.h"
 #include "Input.h"
+#include <imgui.h>
 
 namespace Hazel
 {
@@ -21,6 +22,8 @@ namespace Hazel
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallBack(BIND_EVENT_FN(Application::OnEvent));
 
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlayer(m_ImGuiLayer);
 	}
 	Application::~Application()
 	{
@@ -30,11 +33,13 @@ namespace Hazel
 	void Application::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void Application::PushOverlayer(Layer* overlay)
 	{
 		m_LayerStack.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 	void Application::OnEvent(Event& e)
@@ -62,7 +67,7 @@ namespace Hazel
 		while (m_Runing)
 		{
 			auto [x, y] = Input::GetMousePosition();
-			HZ_INFO("MousePos: {0},{1}.",x,y);
+			HZ_INFO("MousePos: {0}, {1}.",x,y);
 
 			glClearColor(0,0,0,1);
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -70,6 +75,14 @@ namespace Hazel
 			{
 				layer->OnUpdate();
 			}
+
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_LayerStack)
+			{
+				layer->OnImGuiRender();
+			}
+			m_ImGuiLayer->End();
+
 			m_Window->OnUpdate();
 		};
 	}

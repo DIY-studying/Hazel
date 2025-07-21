@@ -1,5 +1,6 @@
 #include <Hazel.h>
 
+
 class  ExampleLayer:public Hazel::Layer
 {
 public:
@@ -11,6 +12,13 @@ public:
 	void OnEvent(Hazel::Event& e) override
 	{
 		HZ_TRACE("{0} ", e.ToString());
+	}
+
+	void OnImGuiRender() override
+	{
+		//ImGui::Begin("Test");
+		//ImGui::Text("Hello World");
+		//ImGui::End();
 	}
 
 	void OnUpdate() override
@@ -25,7 +33,7 @@ class  SandBox :public Hazel::Application
 public:
 	SandBox()
 	{
-		PushLayer(new Hazel::ImGuiLayer());
+		PushLayer(new ExampleLayer());
 	}
 	~SandBox()
 	{

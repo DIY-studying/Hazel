@@ -42,3 +42,9 @@ ImGui的输入过时了，被替换为新的API，这篇[文章](https://github.
 ## 19 input poll
 
 它的代码有点错误，并且不会及时返回错误，但也不错。这个错误是对GLFW的state返回的值不是很清楚，他是在凭感觉。
+
+## ImGui Docking
+
+- 处理了LayerStack问题，迭代器会出先问题，改用数字索引（[文章](https://github.com/TheCherno/Hazel/issues/34)）
+
+- 重构了ImGuiLayer, 切换了imgui子库为docking分支。

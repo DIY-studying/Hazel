@@ -5,6 +5,7 @@
 #include "Events/ApplicationEvent.h"
 #include "Events/Event.h"
 #include "LayerStack.h"
+#include "ImGui/ImGuiLayer.h"
 
 namespace Hazel
 {
@@ -31,6 +32,7 @@ namespace Hazel
 		LayerStack m_LayerStack;
 	private:
 		static Application* s_Instance;
+		ImGuiLayer* m_ImGuiLayer;
 	};
 
 	//define in client
