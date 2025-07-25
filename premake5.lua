@@ -24,9 +24,10 @@ include "Hazel/vendor/imgui"
 
 project "Hazel"
    location "Hazel"
-   kind "SharedLib"
+   kind "StaticLib"
    language "c++"
-   staticruntime "off"
+   staticruntime "on"
+   cppdialect "c++17"
    buildoptions { "/utf-8" }
 
    targetdir ("%{prj.name}/bin/"..outputdir.."/%{prj.name}")
@@ -42,6 +43,14 @@ project "Hazel"
      -- include glm source file
      "%{prj.name}/vendor/glm/glm/**.hpp",
      "%{prj.name}/vendor/glm/glm/**.inl",
+   }
+
+   defines
+   {
+     -- trust deprecated CRT funs disable warnings --
+     "_CRT_SECURE_NO_WARNINGS",
+     -- spdlog warnings solved --
+     "FMT_USE_CONSTEXPR",
    }
 
    includedirs
@@ -63,7 +72,6 @@ project "Hazel"
    }
 
    filter "system:windows"
-		cppdialect "c++17"
         systemversion "latest"
 
    defines
@@ -76,15 +84,11 @@ project "Hazel"
     "IMGUI_IMPL_OPENGL_LOADER_CUSTOM", 
    }
 
-   postbuildcommands
-   {
-    ("{MKDIR} bin/".. outputdir .."/Sandbox"),
-    ("{COPYFILE} %{cfg.buildtarget.relpath} \"bin/"..outputdir.."/Sandbox/\""),
-   }
    filter "configurations:Debug"
         defines {"HZ_DEBUG"}
         runtime "Debug"
-        symbols "On"
+        symbols "on"
+
     defines
     {
         "HZ_DEBUG"
@@ -93,23 +97,23 @@ project "Hazel"
    filter "configurations:Release"
         defines {"HZ_REALEASE"}
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
    filter "configurations:Dist"
         defines {"HZ_DIST"}        
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
 project "Sandbox"
    location "Sandbox"
    kind "ConsoleApp"
    language "c++"
-   staticruntime "off"
+   staticruntime "on"
+   cppdialect "c++17"
    buildoptions { "/utf-8" }
 
 
    filter "system:windows"
-		cppdialect "c++17"
         systemversion "latest"
 
    files
@@ -143,17 +147,17 @@ project "Sandbox"
     filter "configurations:Debug"
         defines {"HZ_DEBUG"}
         runtime "Debug"
-        symbols "On"
+        symbols "on"
 
     filter "configurations:Release"
         defines {"HZ_REALEASE"}
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
     filter "configurations:Dist"
         defines {"HZ_DIST"}        
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
 
    

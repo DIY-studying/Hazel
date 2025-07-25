@@ -37,7 +37,7 @@ ImGui的输入过时了，被替换为新的API，这篇[文章](https://github.
 
 ## 18 pull request
 
-对postcommand进行了修改，了解了一些不曾知道的事，但premake的API发生了改变，有些不同，这篇(文章)[https://github.com/TheCherno/Hazel/issues/9]有相应的讨论。
+对postcommand进行了修改，了解了一些不曾知道的事，但premake的API发生了改变，有些不同，这篇[文章](https://github.com/TheCherno/Hazel/issues/9)有相应的讨论。
 
 ## 19 input poll
 
@@ -48,3 +48,9 @@ ImGui的输入过时了，被替换为新的API，这篇[文章](https://github.
 - 处理了LayerStack问题，迭代器会出先问题，改用数字索引（[文章](https://github.com/TheCherno/Hazel/issues/34)）
 
 - 重构了ImGuiLayer, 切换了imgui子库为docking分支。
+
+## Static Libraries and ZERO Warnings
+
+- 把dll转换为static library
+- 解决spdlog的warings,添加`FMT_USE_CONSTEXPR`宏，参考[文章](https://github.com/gabime/spdlog/pull/2859)
+- 解决CRT 中一些丢弃的函数修改建议warings,可能是一些库使用了，用`_CRT_SECURE_NO_WARNINGS`忽略warings。
