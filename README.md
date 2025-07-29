@@ -1,8 +1,8 @@
 # Hazel
-
 Hazel Eigen
 
-# watching Thought
+- sb visual studio, fuck Microsoft Corporation. 
+
 ## 11 Window Abstraction and GLFW
 
 编译时GLFW出现了问题，原因是Hazel被编译为动态库，而GLFW也被编译为动态库，要把GLFW修改为静态库。深层次的原因需要我继续探索。
@@ -52,5 +52,11 @@ ImGui的输入过时了，被替换为新的API，这篇[文章](https://github.
 ## 26 Static Libraries and ZERO Warnings
 
 - 把dll转换为static library
-- 解决spdlog的warings,添加`FMT_USE_CONSTEXPR`宏，参考[文章](https://github.com/gabime/spdlog/pull/2859)
+- spdlog的警告纯属胡说八道，[链接](https://github.com/fmtlib/fmt/issues/1131) 。
 - 解决CRT 中一些丢弃的函数修改建议warings,可能是一些库使用了，用`_CRT_SECURE_NO_WARNINGS`忽略warings。
+
+## 27~36
+>因为我已经看完了OpenGL系列，所以这段忽略。但我也获取了不少的知识。
+
+- 首先是uniform的设计，一种是shader用于计算模型的MVP(GPU side),这涉及到对摄像机的VP(view projection matrix)的获取方式，可能会设计一种buffer来解决;另一种是，matrial用于材质等属性的设置。
+- 我实现的VertexBuffer是基于OpenGL系列的视频实现的，和原视频有较大差距，我不知道会不会对后续我实现的Vulkan platform带来麻烦。

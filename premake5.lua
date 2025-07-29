@@ -49,8 +49,6 @@ project "Hazel"
    {
      -- trust deprecated CRT funs disable warnings --
      "_CRT_SECURE_NO_WARNINGS",
-     -- spdlog warnings solved --
-     "FMT_USE_CONSTEXPR",
    }
 
    includedirs

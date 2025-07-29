@@ -2,6 +2,8 @@
 #include<Hazel/Window.h>
 #include <GLFW/glfw3.h>
 
+#include "Hazel/Render/GraphicsContext.h"
+
 namespace Hazel
 {
 	class WindowsWindow:public Window
@@ -38,6 +40,10 @@ namespace Hazel
 		};
 
 		WindowData m_Data;
+		
+
+
+		GraphicsContext* context;
 	};
 }
 

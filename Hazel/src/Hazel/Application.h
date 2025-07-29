@@ -1,11 +1,13 @@
 #pragma once
-
 #include "Core.h"
 #include "Window.h"
 #include "Events/ApplicationEvent.h"
 #include "Events/Event.h"
 #include "LayerStack.h"
+
 #include "ImGui/ImGuiLayer.h"
+
+
 
 namespace Hazel
 {
@@ -33,6 +35,8 @@ namespace Hazel
 	private:
 		static Application* s_Instance;
 		ImGuiLayer* m_ImGuiLayer;
+
+		
 	};
 
 	//define in client

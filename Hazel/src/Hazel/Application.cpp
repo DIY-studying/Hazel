@@ -1,17 +1,12 @@
 #include "hzpch.h"
-
 #include "Application.h"
 
-
 #include "Log.h"
-#include "glad/glad.h"
 #include "Input.h"
 #include <imgui.h>
 
 namespace Hazel
 {
-#define BIND_EVENT_FN(x) std::bind(&x,this,std::placeholders::_1)
-
 	Application* Application::s_Instance=nullptr;
 
 	Application::Application()
@@ -20,7 +15,7 @@ namespace Hazel
 		s_Instance = this;
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallBack(BIND_EVENT_FN(Application::OnEvent));
+		m_Window->SetEventCallBack(HZ_BIND_EVENT_FN(Application::OnEvent));
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlayer(m_ImGuiLayer);
@@ -46,7 +41,7 @@ namespace Hazel
 	{
 		EventDisPatcher dispatcher(e);
 
-		dispatcher.Dispatch<WindowClosedEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowClosedEvent>(HZ_BIND_EVENT_FN(Application::OnWindowClose));
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
@@ -66,11 +61,9 @@ namespace Hazel
 	{
 		while (m_Runing)
 		{
-			auto [x, y] = Input::GetMousePosition();
-			HZ_INFO("MousePos: {0}, {1}.",x,y);
+			
 
-			glClearColor(0,0,0,1);
-			glClear(GL_COLOR_BUFFER_BIT);
+
 			for (Layer* layer:m_LayerStack)
 			{
 				layer->OnUpdate();
