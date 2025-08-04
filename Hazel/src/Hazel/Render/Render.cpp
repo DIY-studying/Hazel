@@ -2,6 +2,8 @@
 #include "Render.h"
 #include "RenderCommand.h"
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 namespace Hazel
 {
 	Render::SceneData* Render::m_SceneData=new Render::SceneData();
@@ -19,8 +21,8 @@ namespace Hazel
 	{
 		vertexArray->Bind();
 		shader->Bind();
-
-		shader->SetUniformMat4(m_SceneData->ViewProjectMatrix,"m_MVP");
+		dynamic_cast<OpenGLShader*>(shader.get())->SetUniformMat4(m_SceneData->ViewProjectMatrix, "u_ViewProject");;
+		
 		RenderCommand::DrawIndex(vertexArray);
 	}
 

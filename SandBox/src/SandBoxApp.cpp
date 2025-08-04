@@ -3,12 +3,13 @@
 #include "imgui/imgui.h"
 
 #include "memory.h"
-
+#include "Platform/OpenGL/OpenGLShader.h"
 
 class  ExampleLayer:public Hazel::Layer
 {
 public:
-	ExampleLayer() :Layer("Example"),m_camera(-1.6f, 1.6f, -0.9f, 0.9f),m_CameraPosition(0)
+	ExampleLayer() 
+		:Layer("Example"),m_camera(-1.6f, 1.6f, -0.9f, 0.9f),m_CameraPosition(0),m_Color()
 	{
 		float vertexs[6 * 3] = {
 			-0.5f,-0.5f,0.0f,			0.8f,1.0f,1.0f,
@@ -44,12 +45,12 @@ public:
 				layout(location=1) in vec3 a_Color;
 
 				out vec3 v_Color;				
-				uniform mat4 m_MVP;				
+				uniform mat4 u_ViewProject;				
 
 				void main()
 				{
 					v_Color=a_Color;
-					gl_Position=m_MVP*vec4(a_Position,1.0f);
+					gl_Position=u_ViewProject*vec4(a_Position,1.0f);
 					//gl_Position=vec4(a_Position,1.0f);
 				}
 		)";
@@ -58,15 +59,18 @@ public:
 				out vec4 color;				
 				
 				in vec3 v_Color;
+				uniform vec3 u_Color;
 				void main()
 				{
 					color=vec4(0.8,0.3,0.2,1.0);
 					color=vec4(v_Color,1.0f);
+					color=vec4(u_Color,1.0f);
 				}
 		)";
 
 
-		m_Shader.reset(new Hazel::Shader(vertexSrc, framentSrc));
+		m_Shader.reset(Hazel::Shader::Creat(vertexSrc, framentSrc));
+		
 	}
 	
 	void OnEvent(Hazel::Event& e) override
@@ -76,24 +80,26 @@ public:
 
 	void OnImGuiRender() override
 	{
-		
+		ImGui::Begin("debug");
+		ImGui::ColorEdit3("debug",&m_Color[0]);
+		ImGui::End();
 	}
 
-	void OnUpdate() override
+	void OnUpdate(Hazel::TimeStep ts) override
 	{
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_DOWN))
-			m_CameraPosition.y -= m_MoveSpeed;
+			m_CameraPosition.y -= m_MoveSpeed* ts;
 		else if (Hazel::Input::IsKeyPressed(HZ_KEY_UP))
-			m_CameraPosition.y += m_MoveSpeed;
+			m_CameraPosition.y += m_MoveSpeed * ts;
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT))
-			m_CameraPosition.x -= m_MoveSpeed;
+			m_CameraPosition.x -= m_MoveSpeed * ts;
 		else if(Hazel::Input::IsKeyPressed(HZ_KEY_RIGHT))
-			m_CameraPosition.x += m_MoveSpeed;
+			m_CameraPosition.x += m_MoveSpeed * ts;
 
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_A))
-			m_angle -= m_RotateSpeed;
+			m_angle -= m_RotateSpeed * ts;
 		else if (Hazel::Input::IsKeyPressed(HZ_KEY_D))
-			m_angle += m_RotateSpeed;
+			m_angle += m_RotateSpeed * ts;
 
 
 		Hazel::RenderCommand::SetClearColor({ 0.2f,0.2f,0.2f,1.0f });
@@ -103,6 +109,7 @@ public:
 		m_camera.SetRotation(m_angle);
 
 		Hazel::Render::BeginScene(m_camera);
+		dynamic_cast<Hazel::OpenGLShader*>(m_Shader.get())->SetUniformFloat3(m_Color, "u_Color");
 		Hazel::Render::Submit(m_Shader, m_VertexArray);
 		Hazel::Render::EndScene();
 	}
@@ -113,8 +120,9 @@ private:
 	Hazel::OrthoCamera m_camera;
 	glm::vec3 m_CameraPosition;
 	float m_angle = 0.0f;
-	float m_MoveSpeed=0.01f;
-	float m_RotateSpeed=2.0f;
+	float m_MoveSpeed = 5.f;;
+	float m_RotateSpeed=30.0f;
+	glm::vec3 m_Color;
 };
 
 class  SandBox :public Hazel::Application

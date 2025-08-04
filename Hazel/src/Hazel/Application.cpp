@@ -4,9 +4,10 @@
 #include "Log.h"
 #include "Input.h"
 #include <imgui.h>
-
+#include "GLFW/glfw3.h"
 namespace Hazel
 {
+
 	Application* Application::s_Instance=nullptr;
 
 	Application::Application()
@@ -61,12 +62,14 @@ namespace Hazel
 	{
 		while (m_Runing)
 		{
-			
+			float time =(float)glfwGetTime();
+			TimeStep timeStep=time-m_LastFramTime;
+			m_LastFramTime = time;
 
 
 			for (Layer* layer:m_LayerStack)
 			{
-				layer->OnUpdate();
+				layer->OnUpdate(timeStep);
 			}
 
 			m_ImGuiLayer->Begin();

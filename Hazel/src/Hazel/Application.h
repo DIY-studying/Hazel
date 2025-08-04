@@ -6,7 +6,7 @@
 #include "LayerStack.h"
 
 #include "ImGui/ImGuiLayer.h"
-
+#include "Hazel/Core/TimeStep.h"
 
 
 namespace Hazel
@@ -37,6 +37,7 @@ namespace Hazel
 		ImGuiLayer* m_ImGuiLayer;
 
 		
+		float m_LastFramTime;
 	};
 
 	//define in client
