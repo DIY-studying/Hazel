@@ -12,12 +12,17 @@ namespace Hazel
 		m_SceneData->ViewProjectMatrix = orthoCamera.GetViewProjectMatrix();
 	}
 
+	void Render::Init()
+	{
+		RenderCommand::Init();
+	}
+
 	void Render::EndScene()
 	{
 
 	}
 
-	void Render::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray)
+	void Render::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray)
 	{
 		vertexArray->Bind();
 		shader->Bind();

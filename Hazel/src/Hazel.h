@@ -12,11 +12,12 @@
 
 //---Render--------------------------
 #include "Hazel/Render/Shader.h"
+#include "Hazel/Render/Texture.h"
 #include "Hazel/Render/Buffer.h"
 #include "Hazel/Render/VertexArray.h"
 #include "Hazel/Render/OrthoCamera.h"
-#include"Hazel/Render/Render.h"
-#include"Hazel/Render/RenderCommand.h";
+#include "Hazel/Render/Render.h"
+#include "Hazel/Render/RenderCommand.h"
 //------------------------------------------
 
 

@@ -4,7 +4,13 @@
 
 namespace Hazel
 {
-	void OpenGLRenderAPI::DrawIndex(const std::shared_ptr<VertexArray>& vertexArray)
+	void OpenGLRenderAPI::Init()
+	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
+	void OpenGLRenderAPI::DrawIndex(const Ref<VertexArray>& vertexArray)
 	{
 		glDrawElements(GL_TRIANGLES,vertexArray->GetIndexBuffer()->GetCount(),GL_UNSIGNED_INT,nullptr);
 	}

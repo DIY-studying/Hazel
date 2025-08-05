@@ -153,4 +153,9 @@ namespace Hazel
 		GLint location = glGetUniformLocation(m_RenderID, name.c_str());
 		glUniform4fv(location, 1, glm::value_ptr(vector));
 	}
+	void OpenGLShader::SetUniformInt1(int slot, const std::string& name)
+	{
+		GLint location = glGetUniformLocation(m_RenderID, name.c_str());
+		glUniform1i(location,slot);
+	}
 }

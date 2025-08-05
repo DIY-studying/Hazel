@@ -20,6 +20,7 @@ namespace Hazel
 		void SetUniformMat3(const glm::mat3& matrix, const std::string& name);
 		void SetUniformFloat3(const glm::vec3& vector, const std::string& name);
 		void SetUniformFloat4(const glm::vec4& vector, const std::string& name);
+		void SetUniformInt1(int slot, const std::string& name);
 	private:
 		uint32_t m_RenderID;
 

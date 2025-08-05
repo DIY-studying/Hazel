@@ -2,33 +2,33 @@
 
 #include "imgui/imgui.h"
 
-#include "memory.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 class  ExampleLayer:public Hazel::Layer
 {
 public:
-	ExampleLayer() 
-		:Layer("Example"),m_camera(-1.6f, 1.6f, -0.9f, 0.9f),m_CameraPosition(0),m_Color()
+	ExampleLayer()
+		:Layer("Example"), m_camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0), m_Color()
 	{
-		float vertexs[6 * 3] = {
-			-0.5f,-0.5f,0.0f,			0.8f,1.0f,1.0f,
-			0.5f,-0.5f,0.0f,			1.0f,1.0f,0.1f,
-			0.0f,0.5f,0.0f,			1.0f,0.2f,1.0f,
+		float vertexs[5 * 4] = {
+			-0.5f,-0.5f,0.0f,			0.0f,0.0f,
+			0.5f,-0.5f,0.0f,			1.0f,0.0f,
+			0.5f,0.5f,0.0f,			1.0f,1.0f,
+			-0.5f,0.5f,0.0f,			0.0f,1.0f
 		};
-		unsigned int indexs[3] = { 0,1,2 };
+		unsigned int indexs[3*2] = { 0,1,2,2,3,0 };
 
 		m_VertexArray.reset(Hazel::VertexArray::Creat());
 		m_VertexArray->Bind();
 
 
-		std::shared_ptr <Hazel::VertexBuffer> vertexBuffer;
-		std::shared_ptr <Hazel::IndexBuffer> indexBuffer;
+		Hazel::Ref <Hazel::VertexBuffer> vertexBuffer;
+		Hazel::Ref <Hazel::IndexBuffer> indexBuffer;
 		vertexBuffer.reset(Hazel::VertexBuffer::Creat(vertexs, sizeof(vertexs)));
 		{
 			Hazel::BufferLayout layout;
 			layout.Push<float>(3);
-			layout.Push<float>(3);
+			layout.Push<float>(2);
 
 			vertexBuffer->SetLayout(layout);
 		}
@@ -42,35 +42,35 @@ public:
 		std::string vertexSrc = R"(
 				#version 330 core
 				layout(location=0) in vec3 a_Position;
-				layout(location=1) in vec3 a_Color;
-
-				out vec3 v_Color;				
+				layout(location=1) in vec2 a_TexCor;
+				
 				uniform mat4 u_ViewProject;				
+				out vec2 v_TexCor;	
 
 				void main()
 				{
-					v_Color=a_Color;
+					v_TexCor=a_TexCor;
 					gl_Position=u_ViewProject*vec4(a_Position,1.0f);
-					//gl_Position=vec4(a_Position,1.0f);
 				}
 		)";
 		std::string framentSrc = R"(
 				#version 330 core
 				out vec4 color;				
 				
-				in vec3 v_Color;
-				uniform vec3 u_Color;
+				uniform sampler2D  u_Texture;
+				in vec2 v_TexCor;	
 				void main()
 				{
-					color=vec4(0.8,0.3,0.2,1.0);
-					color=vec4(v_Color,1.0f);
-					color=vec4(u_Color,1.0f);
+					color=texture(u_Texture,v_TexCor);
 				}
 		)";
 
 
 		m_Shader.reset(Hazel::Shader::Creat(vertexSrc, framentSrc));
-		
+		m_Texture1 = Hazel::Texture2D::Creat("Assets/image/awesomeface.png");
+		m_Texture2 = Hazel::Texture2D::Creat("Assets/image/container.jpg");
+		dynamic_cast<Hazel::OpenGLShader*>(m_Shader.get())->SetUniformFloat3(m_Color, "u_Color");
+		dynamic_cast<Hazel::OpenGLShader*>(m_Shader.get())->SetUniformFloat3(m_Color, "u_Texture");
 	}
 	
 	void OnEvent(Hazel::Event& e) override
@@ -81,19 +81,18 @@ public:
 	void OnImGuiRender() override
 	{
 		ImGui::Begin("debug");
-		ImGui::ColorEdit3("debug",&m_Color[0]);
 		ImGui::End();
 	}
 
 	void OnUpdate(Hazel::TimeStep ts) override
 	{
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_DOWN))
-			m_CameraPosition.y -= m_MoveSpeed* ts;
+			m_CameraPosition.y -= m_MoveSpeed * ts;
 		else if (Hazel::Input::IsKeyPressed(HZ_KEY_UP))
 			m_CameraPosition.y += m_MoveSpeed * ts;
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT))
 			m_CameraPosition.x -= m_MoveSpeed * ts;
-		else if(Hazel::Input::IsKeyPressed(HZ_KEY_RIGHT))
+		else if (Hazel::Input::IsKeyPressed(HZ_KEY_RIGHT))
 			m_CameraPosition.x += m_MoveSpeed * ts;
 
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_A))
@@ -109,13 +108,17 @@ public:
 		m_camera.SetRotation(m_angle);
 
 		Hazel::Render::BeginScene(m_camera);
-		dynamic_cast<Hazel::OpenGLShader*>(m_Shader.get())->SetUniformFloat3(m_Color, "u_Color");
+		m_Texture1->Bind();
+		Hazel::Render::Submit(m_Shader, m_VertexArray);
+		m_Texture2->Bind();
 		Hazel::Render::Submit(m_Shader, m_VertexArray);
 		Hazel::Render::EndScene();
 	}
 private:
-	std::shared_ptr <Hazel::Shader> m_Shader;
-	std::shared_ptr<Hazel::VertexArray> m_VertexArray;
+	Hazel::Ref <Hazel::Shader> m_Shader;
+	Hazel::Ref<Hazel::VertexArray> m_VertexArray;
+
+	Hazel::Ref<Hazel::Texture> m_Texture1,m_Texture2;
 
 	Hazel::OrthoCamera m_camera;
 	glm::vec3 m_CameraPosition;

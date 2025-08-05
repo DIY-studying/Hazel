@@ -5,6 +5,8 @@
 #include "Input.h"
 #include <imgui.h>
 #include "GLFW/glfw3.h"
+#include "Hazel/Render/Render.h"
+
 namespace Hazel
 {
 
@@ -15,8 +17,12 @@ namespace Hazel
 		HZ_CORE_ASSERT(!s_Instance,"Application already exist!");
 		s_Instance = this;
 
+		
+
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallBack(HZ_BIND_EVENT_FN(Application::OnEvent));
+
+		Render::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlayer(m_ImGuiLayer);

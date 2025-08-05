@@ -11,10 +11,11 @@ namespace Hazel
 	class  Render
 	{
 	public:
+		static void Init();
 		static void BeginScene(OrthoCamera& orthoCamera);
 		static void EndScene();
 
-		static void Submit(const std::shared_ptr<Shader>& shader,const std::shared_ptr<VertexArray>& vertexArray);
+		static void Submit(const Ref<Shader>& shader,const Ref<VertexArray>& vertexArray);
 
 		inline static RenderAPI::API GetAPI() { return RenderAPI::GetAPI(); }
 	private:

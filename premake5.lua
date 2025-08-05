@@ -17,10 +17,13 @@ IncludeDir["GLFW"]="Hazel/vendor/GLFW/include"
 IncludeDir["Glad"]="Hazel/vendor/glad/include"
 IncludeDir["ImGui"]="Hazel/vendor/imgui"
 IncludeDir["glm"]="Hazel/vendor/glm"
+IncludeDir["stb"]="Hazel/vendor/stb_image"
 
-include "Hazel/vendor/GLFW"
-include "Hazel/vendor/Glad"
-include "Hazel/vendor/imgui"
+group "Dependence"
+  include "Hazel/vendor/GLFW"
+  include "Hazel/vendor/Glad"
+  include "Hazel/vendor/imgui"
+group ""
 
 project "Hazel"
    location "Hazel"
@@ -40,6 +43,9 @@ project "Hazel"
    {
      "%{prj.name}/src/**.h",
      "%{prj.name}/src/**.cpp",
+
+     "%{prj.name}/vendor/stb_image/**.cpp",
+     "%{prj.name}/vendor/stb_image/**.h",
      -- include glm source file
      "%{prj.name}/vendor/glm/glm/**.hpp",
      "%{prj.name}/vendor/glm/glm/**.inl",
@@ -59,7 +65,8 @@ project "Hazel"
     "%{IncludeDir.Glad}",
     "%{IncludeDir.ImGui}",
     "%{IncludeDir.ImGui}/backends",
-    "%{IncludeDir.glm}"
+    "%{IncludeDir.glm}",
+    "%{IncludeDir.stb}",
    }
    links
    {
