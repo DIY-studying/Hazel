@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <cstdint>
 #include <vector>
 
@@ -10,7 +9,21 @@ namespace Hazel
 	{
 		None = 0, Float,Int
 	};
-
+	template <typename T>
+	static ShaderDataType TypeToShaderDataType()
+	{
+		return ShaderDataType::None;
+	}
+	template<>
+	static ShaderDataType TypeToShaderDataType<float>()
+	{
+		return ShaderDataType::Float;
+	}
+	template<>
+	static ShaderDataType TypeToShaderDataType<int>()
+	{
+		return ShaderDataType::Int;
+	}
 	// when modify ShaderDataType, you need also modify function below.
 	static unsigned int ShaderDataTypeToOpenGLType(ShaderDataType type);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,26 +46,25 @@ namespace Hazel
 	class BufferLayout
 	{
 	public:
-
 		BufferLayout() :m_stride(0) {}
-
 
 		template <typename T> void Push(unsigned int  count, bool normalize = false)
 		{
-			HZ_CORE_ASSERT(false, "Unknow type!");
+			switch (TypeToShaderDataType<T>())
+			{
+			case ShaderDataType::Float:
+				m_Elements.push_back(BufferElement(normalize, count, m_stride, ShaderDataType::Float));
+				m_stride += sizeof(float) * count;
+				break;
+			case ShaderDataType::Int:
+				m_Elements.push_back(BufferElement(normalize, count, m_stride, ShaderDataType::Int));
+				m_stride += sizeof(int) * count;
+				break;
+			case ShaderDataType::None:
+				HZ_CORE_ASSERT(false, "Unknow type!");
+				break;
+			}
 		}
-
-		template<> inline void Push<float>(unsigned int count, bool normalize)
-		{
-			m_Elements.push_back(BufferElement(normalize, count, m_stride, ShaderDataType::Float));
-			m_stride += sizeof(float) * count;
-		}
-		template<> inline void Push<int>(unsigned int count, bool normalize)
-		{
-			m_Elements.push_back(BufferElement(normalize, count, m_stride, ShaderDataType::Int));
-			m_stride += sizeof(int) * count;
-		}
-
 
 		inline uint32_t GetStride() const { return m_stride; }
 		inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
