@@ -1,8 +1,8 @@
 #include "hzpch.h"
 #include "OpenGLShader.h"
 
-#include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"
+#include "glad/glad.h"
 
 namespace Hazel
 {
@@ -22,9 +22,19 @@ namespace Hazel
 		std::string& src = ReadFile(filePath);
 		const std::unordered_map<GLenum,std::string>& shaderSrcMap = Process(src);
 		Compile(shaderSrcMap);
+
+		// Rubber name from filePath.
+		auto lastSlash = filePath.find_last_of("/\\");
+		lastSlash = (lastSlash == std::string::npos) ? 0 : lastSlash + 1;
+		auto lastDot = filePath.rfind(".");
+		lastDot = (lastDot == std::string::npos) ? filePath.size() : lastDot;
+
+		m_name = filePath.substr(lastSlash, lastDot - lastSlash);
+
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string fragmentSrc)
+	OpenGLShader::OpenGLShader(const std::string& name,const std::string& vertexSrc, const std::string fragmentSrc)
+		:m_name(name)
 	{
 		std::unordered_map<GLenum, std::string> shaderSrcMap;
 		shaderSrcMap[GL_VERTEX_SHADER] = vertexSrc;
@@ -44,6 +54,11 @@ namespace Hazel
 	void OpenGLShader::UnBind() const
 	{
 		glUseProgram(0);
+	}
+
+	const std::string& OpenGLShader::GetName() const
+	{
+		return m_name;
 	}
 	
 
@@ -78,6 +93,7 @@ namespace Hazel
 	{
 		GLuint program = glCreateProgram();
 		std::vector<GLuint> shaderIDs;
+		shaderIDs.reserve(shaderSrcMap.size());
 		for (auto& key : shaderSrcMap)
 		{
 			GLenum shaderType = key.first;

@@ -38,12 +38,12 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
-		m_Shader=(Hazel::Shader::Creat("Assets/Shader/Texture.glsl"));
+		m_ShaderLibrary.Load("Assets/Shader/Texture.glsl");
+		
 
 		m_Texture1 = Hazel::Texture2D::Creat("Assets/Texture/awesomeface.png");
 		m_Texture2 = Hazel::Texture2D::Creat("Assets/Texture/container.jpg");
-		dynamic_cast<Hazel::OpenGLShader*>(m_Shader.get())->SetUniformFloat3(m_Color, "u_Color");
-		dynamic_cast<Hazel::OpenGLShader*>(m_Shader.get())->SetUniformFloat3(m_Color, "u_Texture");
+		
 	}
 	
 	void OnEvent(Hazel::Event& e) override
@@ -80,15 +80,20 @@ public:
 		m_camera.SetPosition(m_CameraPosition);
 		m_camera.SetRotation(m_angle);
 
+		Hazel::Ref<Hazel::Shader> shader = m_ShaderLibrary.Get("Texture");
+		dynamic_cast<Hazel::OpenGLShader*>(shader.get())->SetUniformFloat3(m_Color, "u_Color");
+		dynamic_cast<Hazel::OpenGLShader*>(shader.get())->SetUniformFloat3(m_Color, "u_Texture");
+
 		Hazel::Render::BeginScene(m_camera);
 		m_Texture2->Bind();
-		Hazel::Render::Submit(m_Shader, m_VertexArray);
+		Hazel::Render::Submit(shader, m_VertexArray);
 		m_Texture1->Bind();
-		Hazel::Render::Submit(m_Shader, m_VertexArray);
+		Hazel::Render::Submit(shader, m_VertexArray);
 		Hazel::Render::EndScene();
 	}
 private:
-	Hazel::Ref <Hazel::Shader> m_Shader;
+	 Hazel::ShaderLibrary m_ShaderLibrary;
+
 	Hazel::Ref<Hazel::VertexArray> m_VertexArray;
 	Hazel::Ref<Hazel::Texture> m_Texture1,m_Texture2;
 
