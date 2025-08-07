@@ -8,12 +8,12 @@
 
 namespace Hazel
 {
-	VertexBuffer* VertexBuffer::Creat(float* vertexs, uint32_t size)
+	Ref<VertexBuffer> VertexBuffer::Creat(float* vertexs, uint32_t size)
 	{
 		switch (Render::GetAPI())
 		{
 		case RenderAPI::API::None: HZ_CORE_ASSERT(false, "RenderAPI::None is currently not supported. "); return nullptr;
-		case RenderAPI::API::OpenGL: return new OpenGLVertexBuffer(vertexs,size) ;
+		case RenderAPI::API::OpenGL: return make_Ref<OpenGLVertexBuffer>(vertexs,size) ;
 		}
 
 
@@ -21,12 +21,12 @@ namespace Hazel
 		return nullptr;
 	}
 
-	IndexBuffer* IndexBuffer::Creat(uint32_t* indexs, uint32_t count)
+	Ref<IndexBuffer> IndexBuffer::Creat(uint32_t* indexs, uint32_t count)
 	{
 		switch (Render::GetAPI())
 		{
 		case RenderAPI::API::None: HZ_CORE_ASSERT(false, "RenderAPI::None is currently not supported. "); return nullptr;
-		case RenderAPI::API::OpenGL: return new OpenGLIndexBuffer(indexs, count);
+		case RenderAPI::API::OpenGL: return make_Ref<OpenGLIndexBuffer>(indexs, count);
 		}
 
 

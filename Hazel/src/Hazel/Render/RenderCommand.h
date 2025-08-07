@@ -25,6 +25,7 @@ namespace Hazel {
 		{
 			m_RenderAPI->Clear();
 		}
+		inline static RenderAPI::API GetAPI() { return m_RenderAPI->GetAPI(); }
 	private:
 			static RenderAPI* m_RenderAPI;
 	};

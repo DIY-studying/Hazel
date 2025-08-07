@@ -24,7 +24,7 @@ public:
 
 		Hazel::Ref <Hazel::VertexBuffer> vertexBuffer;
 		Hazel::Ref <Hazel::IndexBuffer> indexBuffer;
-		vertexBuffer.reset(Hazel::VertexBuffer::Creat(vertexs, sizeof(vertexs)));
+		vertexBuffer = (Hazel::VertexBuffer::Creat(vertexs, sizeof(vertexs)));
 		{
 			Hazel::BufferLayout layout;
 			layout.Push<float>(3);
@@ -32,43 +32,16 @@ public:
 
 			vertexBuffer->SetLayout(layout);
 		}
-		indexBuffer.reset(Hazel::IndexBuffer::Creat(indexs, sizeof(indexs) / sizeof(unsigned int)));
+		indexBuffer=Hazel::IndexBuffer::Creat(indexs, sizeof(indexs) / sizeof(unsigned int));
 
 
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
+		m_Shader=(Hazel::Shader::Creat("Assets/Shader/Texture.glsl"));
 
-		std::string vertexSrc = R"(
-				#version 330 core
-				layout(location=0) in vec3 a_Position;
-				layout(location=1) in vec2 a_TexCor;
-				
-				uniform mat4 u_ViewProject;				
-				out vec2 v_TexCor;	
-
-				void main()
-				{
-					v_TexCor=a_TexCor;
-					gl_Position=u_ViewProject*vec4(a_Position,1.0f);
-				}
-		)";
-		std::string framentSrc = R"(
-				#version 330 core
-				out vec4 color;				
-				
-				uniform sampler2D  u_Texture;
-				in vec2 v_TexCor;	
-				void main()
-				{
-					color=texture(u_Texture,v_TexCor);
-				}
-		)";
-
-
-		m_Shader.reset(Hazel::Shader::Creat(vertexSrc, framentSrc));
-		m_Texture1 = Hazel::Texture2D::Creat("Assets/image/awesomeface.png");
-		m_Texture2 = Hazel::Texture2D::Creat("Assets/image/container.jpg");
+		m_Texture1 = Hazel::Texture2D::Creat("Assets/Texture/awesomeface.png");
+		m_Texture2 = Hazel::Texture2D::Creat("Assets/Texture/container.jpg");
 		dynamic_cast<Hazel::OpenGLShader*>(m_Shader.get())->SetUniformFloat3(m_Color, "u_Color");
 		dynamic_cast<Hazel::OpenGLShader*>(m_Shader.get())->SetUniformFloat3(m_Color, "u_Texture");
 	}
@@ -108,16 +81,15 @@ public:
 		m_camera.SetRotation(m_angle);
 
 		Hazel::Render::BeginScene(m_camera);
-		m_Texture1->Bind();
-		Hazel::Render::Submit(m_Shader, m_VertexArray);
 		m_Texture2->Bind();
+		Hazel::Render::Submit(m_Shader, m_VertexArray);
+		m_Texture1->Bind();
 		Hazel::Render::Submit(m_Shader, m_VertexArray);
 		Hazel::Render::EndScene();
 	}
 private:
 	Hazel::Ref <Hazel::Shader> m_Shader;
 	Hazel::Ref<Hazel::VertexArray> m_VertexArray;
-
 	Hazel::Ref<Hazel::Texture> m_Texture1,m_Texture2;
 
 	Hazel::OrthoCamera m_camera;
@@ -141,6 +113,7 @@ public:
 	}
 
 };
+
 Hazel::Application* Hazel::CreatApplication()
 {
 	return new SandBox();

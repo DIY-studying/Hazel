@@ -4,10 +4,10 @@
 #include "RenderAPI.h"
 #include "OrthoCamera.h"
 #include "Shader.h"
+#include "RenderCommand.h"
 
 namespace Hazel
 {
-
 	class  Render
 	{
 	public:
@@ -17,7 +17,7 @@ namespace Hazel
 
 		static void Submit(const Ref<Shader>& shader,const Ref<VertexArray>& vertexArray);
 
-		inline static RenderAPI::API GetAPI() { return RenderAPI::GetAPI(); }
+		inline static RenderAPI::API GetAPI() { return RenderCommand::GetAPI(); }
 	private:
 		struct  SceneData
 		{

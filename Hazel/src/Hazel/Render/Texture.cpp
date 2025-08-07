@@ -10,7 +10,7 @@ namespace Hazel {
 		switch (Render::GetAPI())
 		{
 		case RenderAPI::API::None: HZ_CORE_ASSERT(false, "RenderAPI::None is currently not supported. "); return nullptr;
-		case RenderAPI::API::OpenGL: return std::make_shared<OpenGLTexture2D>(path);
+		case RenderAPI::API::OpenGL: return make_Ref<OpenGLTexture2D>(path);
 		}
 
 
