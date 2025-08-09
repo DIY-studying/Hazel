@@ -29,7 +29,7 @@ public:
 			Hazel::BufferLayout layout;
 			layout.Push<float>(3);
 			layout.Push<float>(2);
-
+			layout.Push<double>(3);
 			vertexBuffer->SetLayout(layout);
 		}
 		indexBuffer=Hazel::IndexBuffer::Creat(indexs, sizeof(indexs) / sizeof(unsigned int));

@@ -62,6 +62,7 @@ namespace Hazel
 				break;
 			case ShaderDataType::None:
 				HZ_CORE_ASSERT(false, "Unknow type!");
+				HZ_CORE_ERROR("'{0}' type not support.",typeid(T).name());
 				break;
 			}
 		}

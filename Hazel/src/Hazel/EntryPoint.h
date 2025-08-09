@@ -8,9 +8,6 @@ extern Hazel::Application*  Hazel::CreatApplication();
 int main(int argc,char ** argv)
 {
 	Hazel::Log::Init();
-	HZ_CORE_WARN("You can't do that.");
-	HZ_ERROR("Something has problem.");
-
 
 	auto app = Hazel::CreatApplication();
 	app->Run();
@@ -18,4 +15,5 @@ int main(int argc,char ** argv)
 
 	return 0;
 }
+
 #endif //  HZ_PLATFORM_WINDOWS
