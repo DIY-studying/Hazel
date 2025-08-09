@@ -3,6 +3,7 @@
 #include "Hazel/Core.h"
 #include "Hazel/Events/Event.h"
 #include "Hazel/Core/TimeStep.h"
+#include "OrthoCameraController.h"
 
 namespace Hazel {
 	class HAZEL_API Layer

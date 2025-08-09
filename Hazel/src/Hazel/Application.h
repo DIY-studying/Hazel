@@ -28,7 +28,7 @@ namespace Hazel
 	private:
 		bool OnWindowClose(WindowClosedEvent&);
 
-		std::unique_ptr<Window> m_Window;
+		Scope<Window> m_Window;
 		bool m_Runing = true;
 
 		LayerStack m_LayerStack;

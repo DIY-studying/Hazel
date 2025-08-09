@@ -18,6 +18,7 @@ namespace Hazel {
 		inline const glm::mat4& GetProjectMatrix() { return m_ProjectMatrix; }
 		inline const glm::mat4& GetViewMatrix() { return m_ViewMatrix; }
 
+		void SetProjectMatrix(float left, float right, float bottom, float top, float zNear = -1.0f, float zFar = 1.0f);
 
 	private:
 		void RecalculateViewMatrix();
