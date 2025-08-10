@@ -5,6 +5,7 @@
 #include "Hazel/Application.h"
 #include "Hazel/Layer.h"
 #include "Hazel/ImGui/ImGuiLayer.h"
+#include "Hazel/OrthoCameraController.h"
 
 #include "Hazel/Input.h"
 #include "Hazel/KeyCode.h"

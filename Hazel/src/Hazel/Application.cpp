@@ -48,6 +48,7 @@ namespace Hazel
 		EventDisPatcher dispatcher(e);
 
 		dispatcher.Dispatch<WindowClosedEvent>(HZ_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(HZ_BIND_EVENT_FN(Application::OnWindowResize));
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
@@ -60,7 +61,14 @@ namespace Hazel
 	bool Application::OnWindowClose(WindowClosedEvent& e)
 	{
 		m_Runing = false;
-		return true;
+		return false;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		Render::OnWindowResize(e.GetWidth(),e.GetHeight());
+
+		return false;
 	}
 
 	void Application::Run()

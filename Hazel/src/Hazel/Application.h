@@ -27,17 +27,18 @@ namespace Hazel
 		inline Window& GetWindow() { return *m_Window; }
 	private:
 		bool OnWindowClose(WindowClosedEvent&);
+		bool OnWindowResize(WindowResizeEvent&);
 
+	private:
 		Scope<Window> m_Window;
 		bool m_Runing = true;
 
 		LayerStack m_LayerStack;
+		ImGuiLayer* m_ImGuiLayer;
+		float m_LastFramTime;
 	private:
 		static Application* s_Instance;
-		ImGuiLayer* m_ImGuiLayer;
-
 		
-		float m_LastFramTime;
 	};
 
 	//define in client

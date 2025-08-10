@@ -1,7 +1,5 @@
 #pragma once
-
 #include "Hazel/Render/Shader.h"
-
 #include <string>
 #include <glm/ext/matrix_float4x4.hpp>
 

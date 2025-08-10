@@ -12,10 +12,17 @@ namespace Hazel
 	{
 	public:
 		static void Init();
+
 		static void BeginScene(OrthoCamera& orthoCamera);
 		static void EndScene();
 
 		static void Submit(const Ref<Shader>& shader,const Ref<VertexArray>& vertexArray);
+
+		// events
+		inline static void OnWindowResize(uint32_t width,uint32_t height) 
+		{
+			RenderCommand::SetViewPort(0,0,width,height);
+		}
 
 		inline static RenderAPI::API GetAPI() { return RenderCommand::GetAPI(); }
 	private:
