@@ -31,7 +31,6 @@ namespace Hazel {
 	{
 		objl::Loader loader;
 		bool loadState = loader.LoadFile(objPath);
-		loader.LoadFile("Assets/Model/bunny.obj");
 		if (!loadState)
 		{
 			HZ_CORE_ASSERT(false, "Fail load file.");
@@ -44,7 +43,7 @@ namespace Hazel {
 
 		m_Vb = VertexBuffer::Creat((float*)&loader.LoadedMeshes[0].Vertices[0], size);
 		m_Vb->SetLayout(VertexLayout::GetLayout());
-		m_Ib = IndexBuffer::Creat(&loader.LoadedMeshes[0].Indices[0], loader.LoadedMeshes[0].Indices.size());
+		m_Ib = IndexBuffer::Creat(&loader.LoadedMeshes[0].Indices[0], (uint32_t)loader.LoadedMeshes[0].Indices.size());
 
 		CalculateModelMatrix();
 	}

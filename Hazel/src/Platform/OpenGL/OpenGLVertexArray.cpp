@@ -50,7 +50,7 @@ namespace Hazel
 		for (const auto& element : vertexBuffer->GetLayout())
 		{
 			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, element.Count, ShaderDataTypeToOpenGLType(element.Type), element.Normalize ? GL_TRUE : GL_FALSE, vertexBuffer->GetLayout().GetStride(), (const void*)element.Offset);
+			glVertexAttribPointer(index, element.Count, ShaderDataTypeToOpenGLType(element.Type), element.Normalize ? GL_TRUE : GL_FALSE, vertexBuffer->GetLayout().GetStride(), (const void*)(uintptr_t)element.Offset);
 			index++;
 		}
 
