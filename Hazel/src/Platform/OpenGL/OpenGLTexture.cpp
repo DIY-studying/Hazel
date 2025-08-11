@@ -29,6 +29,7 @@ namespace Hazel {
 			HZ_CORE_ASSERT(false,"Texture format not support!");
 		}
 
+
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RenderID);
 		glTextureStorage2D(m_RenderID,1, internalFormat, m_Width, m_Height);
 

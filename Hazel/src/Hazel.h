@@ -16,7 +16,7 @@
 #include "Hazel/Render/Texture.h"
 #include "Hazel/Render/Buffer.h"
 #include "Hazel/Render/VertexArray.h"
-#include "Hazel/Render/OrthoCamera.h"
+#include "Hazel/Render/gameobject/Camera.h"
 #include "Hazel/Render/Render.h"
 #include "Hazel/Render/RenderCommand.h"
 //------------------------------------------

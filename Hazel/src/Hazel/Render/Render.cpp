@@ -1,15 +1,13 @@
 #include "hzpch.h"
 #include "Render.h"
-
-
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Hazel
 {
 	Render::SceneData* Render::m_SceneData=new Render::SceneData();
-	void Render::BeginScene(OrthoCamera& orthoCamera)
+	void Render::BeginScene(Camera& camera)
 	{
-		m_SceneData->ViewProjectMatrix = orthoCamera.GetViewProjectMatrix();
+		m_SceneData->ViewProjectMatrix = camera.GetViewProjectMatrix();
 	}
 
 	void Render::Init()

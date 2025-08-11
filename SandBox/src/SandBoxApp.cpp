@@ -3,53 +3,46 @@
 #include "imgui/imgui.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
-#include "Hazel/OrthoCameraController.h"
+#include "Hazel/Render/gameobject/Model.h"
 #include "string.h"
 
 class  ExampleLayer:public Hazel::Layer
 {
 public:
 	ExampleLayer()
-		:Layer("Example"), m_CameraController((float)1280.0f/720.0f), m_Color()
+		:Layer("Example"), fov(15),m_PerspectiveCamera(fov,1280/720),m_Position(0)
 	{
-		float vertexs[5 * 4] = {
-			-0.5f,-0.5f,0.0f,			0.0f,0.0f,
-			0.5f,-0.5f,0.0f,			1.0f,0.0f,
-			0.5f,0.5f,0.0f,			1.0f,1.0f,
-			-0.5f,0.5f,0.0f,			0.0f,1.0f
-		};
-		unsigned int indexs[3*2] = { 0,1,2,2,3,0 };
+		m_VertexArray = Hazel::VertexArray::Creat();
 
-		m_VertexArray.reset(Hazel::VertexArray::Creat());
-		m_VertexArray->Bind();
+		Hazel::Model bunny = Hazel::Model("Assets/Model/spot_quadrangulated.obj");
 
+		m_VertexArray->AddVertexBuffer(bunny.GetVertexBuffer());
+		m_VertexArray->SetIndexBuffer(bunny.GetIndexBuffer());
 
-		Hazel::Ref <Hazel::VertexBuffer> vertexBuffer;
-		Hazel::Ref <Hazel::IndexBuffer> indexBuffer;
-		vertexBuffer = (Hazel::VertexBuffer::Creat(vertexs, sizeof(vertexs)));
-		{
-			Hazel::BufferLayout layout;
-			layout.Push<float>(3);
-			layout.Push<float>(2);
-			vertexBuffer->SetLayout(layout);
-		}
-		indexBuffer=Hazel::IndexBuffer::Creat(indexs, sizeof(indexs) / sizeof(unsigned int));
-
-
-		m_VertexArray->AddVertexBuffer(vertexBuffer);
-		m_VertexArray->SetIndexBuffer(indexBuffer);
-
-		m_ShaderLibrary.Load("Assets/Shader/Texture.glsl");
+		m_ShaderLibrary.Load("Assets/Shader/ModelShader.glsl");
 		
 
-		m_Texture1 = Hazel::Texture2D::Creat("Assets/Texture/awesomeface.png");
-		m_Texture2 = Hazel::Texture2D::Creat("Assets/Texture/container.jpg");
+		m_Texture = Hazel::Texture2D::Creat("Assets/Texture/spot_texture.png");
 		
 	}
 	
 	void OnEvent(Hazel::Event& e) override
 	{
-		m_CameraController.OnEvent(e);
+		Hazel::EventDisPatcher dis(e);
+		dis.Dispatch<Hazel::MouseScrolledEvent>(HZ_BIND_EVENT_FN(ExampleLayer::Move));
+	}
+	bool Move(Hazel::MouseScrolledEvent& e)
+	{
+		float x=e.GetYoffset();
+		if (x == -1)
+		{
+			m_Position.z += m_MoveSpeed;
+		}
+		else if (x == 1)
+		{
+			m_Position.z -= m_MoveSpeed;
+		}
+		return false;
 	}
 
 	void OnImGuiRender() override
@@ -60,32 +53,41 @@ public:
 
 	void OnUpdate(Hazel::TimeStep ts) override
 	{
+		if (Hazel::Input::IsKeyPressed(HZ_KEY_DOWN))
+			m_Position.y -= m_MoveSpeed * ts;
+		else if (Hazel::Input::IsKeyPressed(HZ_KEY_UP))
+			m_Position.y += m_MoveSpeed * ts;
+		if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT))
+			m_Position.x -= m_MoveSpeed * ts;
+		else if (Hazel::Input::IsKeyPressed(HZ_KEY_RIGHT))
+			m_Position.x += m_MoveSpeed * ts;
 		
-		m_CameraController.OnUpdate(ts);
-		//HZ_CORE_INFO("{0}",std::to_string( m_CameraController.GetZoom()));
+		m_PerspectiveCamera.SetPosition(m_Position);
 
 		Hazel::RenderCommand::SetClearColor({ 0.2f,0.2f,0.2f,1.0f });
 		Hazel::RenderCommand::Clear();
 
-		Hazel::Ref<Hazel::Shader> shader = m_ShaderLibrary.Get("Texture");
-		dynamic_cast<Hazel::OpenGLShader*>(shader.get())->SetUniformFloat3(m_Color, "u_Color");
-		dynamic_cast<Hazel::OpenGLShader*>(shader.get())->SetUniformFloat3(m_Color, "u_Texture");
+		Hazel::Ref<Hazel::Shader> shader = m_ShaderLibrary.Get("ModelShader");
 
-		Hazel::Render::BeginScene(m_CameraController.GetCamera());
-		m_Texture2->Bind();
-		Hazel::Render::Submit(shader, m_VertexArray);
-		m_Texture1->Bind();
+		dynamic_cast<Hazel::OpenGLShader*>(shader.get())->SetUniformInt1(0,"u_Texture");
+
+		Hazel::Render::BeginScene(m_PerspectiveCamera);
+		m_Texture->Bind();
 		Hazel::Render::Submit(shader, m_VertexArray);
 		Hazel::Render::EndScene();
 	}
 private:
+	float fov;
+	glm::vec3 m_Position;
+	float m_MoveSpeed = 1.0f;
+
 	Hazel::ShaderLibrary m_ShaderLibrary;
-	Hazel::OrthoCameraController m_CameraController;
+	Hazel::PespectiveCamera m_PerspectiveCamera;
 
 	Hazel::Ref<Hazel::VertexArray> m_VertexArray;
-	Hazel::Ref<Hazel::Texture> m_Texture1,m_Texture2;
+	Hazel::Ref<Hazel::Texture> m_Texture;
 
-	glm::vec3 m_Color;
+	
 };
 
 class  SandBox :public Hazel::Application

@@ -2,7 +2,7 @@
 
 #include "VertexArray.h"
 #include "RenderAPI.h"
-#include "OrthoCamera.h"
+#include "Hazel/Render/gameobject/Camera.h"
 #include "Shader.h"
 #include "RenderCommand.h"
 
@@ -13,7 +13,7 @@ namespace Hazel
 	public:
 		static void Init();
 
-		static void BeginScene(OrthoCamera& orthoCamera);
+		static void BeginScene(Camera& camera);
 		static void EndScene();
 
 		static void Submit(const Ref<Shader>& shader,const Ref<VertexArray>& vertexArray);
