@@ -2,7 +2,6 @@
 #include "OpenGLShader.h"
 
 #include "glm/gtc/type_ptr.hpp"
-#include "glad/glad.h"
 
 namespace Hazel
 {
@@ -65,23 +64,23 @@ namespace Hazel
 
 	void OpenGLShader::SetUniformMat4(const glm::mat4& matrix, const std::string& name)
 	{
-		GLint location = glGetUniformLocation(m_RenderID, name.c_str());
+		GLint location = GetLocation(m_RenderID, name);
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 	void OpenGLShader::SetUniformMat3(const glm::mat3& matrix, const std::string& name)
 	{
-		GLint location = glGetUniformLocation(m_RenderID, name.c_str());
+		GLint location = GetLocation(m_RenderID, name);
 		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 	void OpenGLShader::SetUniformFloat3(const glm::vec3& vector, const std::string& name)
 	{
-		GLint location = glGetUniformLocation(m_RenderID, name.c_str());
+		GLint location = GetLocation(m_RenderID, name);
 		glUniform3fv(location, 1, glm::value_ptr(vector));
 	}
 	void OpenGLShader::SetUniformFloat4(const glm::vec4& vector, const std::string& name)
 	{
-		GLint location = glGetUniformLocation(m_RenderID, name.c_str());
+		GLint location = GetLocation(m_RenderID, name);
 		glUniform4fv(location, 1, glm::value_ptr(vector));
 	}
 	void OpenGLShader::SetUniformInt1(int slot, const std::string& name)
@@ -89,11 +88,20 @@ namespace Hazel
 		GLint location = glGetUniformLocation(m_RenderID, name.c_str());
 		glUniform1i(location,slot);
 	}
+
+	GLint OpenGLShader::GetLocation(GLuint renderID, const std::string& name)
+	{
+		GLint location = glGetUniformLocation(m_RenderID, name.c_str());
+		if (location == -1)
+			HZ_CORE_WARN("shader RenderID: {0}, not exist '{1}' variable.", m_RenderID,name);
+		return location;
+	}
+
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSrcMap)
 	{
 		GLuint program = glCreateProgram();
 		std::vector<GLuint> shaderIDs;
-		shaderIDs.reserve(shaderSrcMap.size());
+
 		for (auto& key : shaderSrcMap)
 		{
 			GLenum shaderType = key.first;
