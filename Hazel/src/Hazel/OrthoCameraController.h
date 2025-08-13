@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Hazel/Render/OrthoCamera.h"
+#include "Hazel/Render/gameobject/Camera.h"
 #include "glm/mat4x4.hpp"
 #include "Hazel/Core/TimeStep.h"
 #include "Hazel/Events/MouseEvent.h"

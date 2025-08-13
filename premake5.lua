@@ -18,6 +18,7 @@ IncludeDir["Glad"]="Hazel/vendor/glad/include"
 IncludeDir["ImGui"]="Hazel/vendor/imgui"
 IncludeDir["glm"]="Hazel/vendor/glm"
 IncludeDir["stb"]="Hazel/vendor/stb_image"
+IncludeDir["OBJ"]="Hazel/vendor/OBJ_Loader"
 
 group "Dependence"
   include "Hazel/vendor/GLFW"
@@ -43,9 +44,11 @@ project "Hazel"
    {
      "%{prj.name}/src/**.h",
      "%{prj.name}/src/**.cpp",
-
+     -- stb_image
      "%{prj.name}/vendor/stb_image/**.cpp",
      "%{prj.name}/vendor/stb_image/**.h",
+     -- OBJ_Loader
+     "%{prj.name}/vendor/OBJ_Loader/**.h",
      -- include glm source file
      "%{prj.name}/vendor/glm/glm/**.hpp",
      "%{prj.name}/vendor/glm/glm/**.inl",
@@ -67,6 +70,7 @@ project "Hazel"
     "%{IncludeDir.ImGui}/backends",
     "%{IncludeDir.glm}",
     "%{IncludeDir.stb}",
+    "%{IncludeDir.OBJ}",
    }
    links
    {

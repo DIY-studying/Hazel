@@ -1,15 +1,14 @@
 #include "hzpch.h"
 #include "Render.h"
-
-
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Hazel/Render/gameobject/Model.h"
 
 namespace Hazel
 {
 	Render::SceneData* Render::m_SceneData=new Render::SceneData();
-	void Render::BeginScene(OrthoCamera& orthoCamera)
+	void Render::BeginScene(Camera& camera)
 	{
-		m_SceneData->ViewProjectMatrix = orthoCamera.GetViewProjectMatrix();
+		m_SceneData->ViewProjectMatrix = camera.GetViewProjectMatrix();
 	}
 
 	void Render::Init()
@@ -26,7 +25,8 @@ namespace Hazel
 	{
 		vertexArray->Bind();
 		shader->Bind();
-		dynamic_cast<OpenGLShader*>(shader.get())->SetUniformMat4(m_SceneData->ViewProjectMatrix, "u_ViewProject");;
+		shader->SetMat4( "u_ViewProject", m_SceneData->ViewProjectMatrix);
+
 		
 		RenderCommand::DrawIndex(vertexArray);
 	}
