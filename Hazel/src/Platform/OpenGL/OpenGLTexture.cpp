@@ -27,8 +27,8 @@ namespace Hazel {
 			break;
 		default :
 			HZ_CORE_ASSERT(false,"Texture format not support!");
+			HZ_CORE_ERROR("Texture format not support!");
 		}
-
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RenderID);
 		glTextureStorage2D(m_RenderID,1, internalFormat, m_Width, m_Height);
@@ -40,12 +40,19 @@ namespace Hazel {
 
 		stbi_image_free((void*)data);
 	}
+
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
 		glDeleteTextures(1,&m_RenderID);
 	}
+
 	void OpenGLTexture2D::Bind(uint32_t slot) const
 	{
-		glBindTextureUnit(slot, m_RenderID);
+		glBindTextureUnit(slot,m_RenderID);
+	}
+
+	void OpenGLTexture2D::UnBind() const
+	{
+		glBindTexture(m_RenderID,0);
 	}
 }
