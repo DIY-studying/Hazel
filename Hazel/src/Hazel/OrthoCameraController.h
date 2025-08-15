@@ -2,7 +2,7 @@
 
 #include "Hazel/Render/gameobject/Camera.h"
 #include "glm/mat4x4.hpp"
-#include "Hazel/Core/TimeStep.h"
+#include "Hazel/Core/Time.h"
 #include "Hazel/Events/MouseEvent.h"
 #include "Hazel/Events/ApplicationEvent.h"
 

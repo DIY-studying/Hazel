@@ -2,7 +2,7 @@
 
 #include "Hazel/Core.h"
 #include "Hazel/Events/Event.h"
-#include "Hazel/Core/TimeStep.h"
+#include "Hazel/Core/Time.h"
 #include "OrthoCameraController.h"
 
 namespace Hazel {
