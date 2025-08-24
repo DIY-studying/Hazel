@@ -33,6 +33,8 @@ namespace Hazel
 		Scope<Window> m_Window;
 		bool m_Runing = true;
 
+		bool m_Minimise=false;
+
 		LayerStack m_LayerStack;
 		ImGuiLayer* m_ImGuiLayer;
 		float m_LastFramTime;

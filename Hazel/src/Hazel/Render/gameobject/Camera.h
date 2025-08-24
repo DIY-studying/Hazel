@@ -7,6 +7,9 @@ namespace Hazel {
 	{
 	public:
 		virtual const glm::mat4& GetViewProjectMatrix() const = 0;
+		virtual const glm::vec3& GetPosition()  const = 0;
+		virtual const glm::mat4& GetProjectMatrix()const = 0;
+		virtual const glm::mat4& GetViewMatrix() const = 0;
 	};
 
 	class OrthoCamera: public Camera
@@ -14,13 +17,13 @@ namespace Hazel {
 	public:
 		OrthoCamera(float left, float right, float bottom, float top, float zNear = -1.0f, float zFar = 1.0f);
 
-		const glm::vec3& GetPosition() const { return m_Position; }
+		virtual const glm::vec3& GetPosition() const override  { return m_Position; }
 		inline void SetPosition(const glm::vec3& pos) { m_Position = pos; RecalculateViewMatrix(); }
 		inline void SetRotation(float angle) { m_angle = angle; RecalculateViewMatrix(); }
 
 		virtual const glm::mat4& GetViewProjectMatrix() const override { return m_ViewProjectMatrix; }
-		inline const glm::mat4& GetProjectMatrix() { return m_ProjectMatrix; }
-		inline const glm::mat4& GetViewMatrix() { return m_ViewMatrix; }
+		virtual const glm::mat4& GetProjectMatrix() const override { return m_ProjectMatrix; }
+		virtual const glm::mat4& GetViewMatrix()  const override { return m_ViewMatrix; }
 
 		void SetProjectMatrix(float left, float right, float bottom, float top, float zNear = -1.0f, float zFar = 1.0f);
 
@@ -41,13 +44,13 @@ namespace Hazel {
 	public:
 		PespectiveCamera(float fov, float aspect, float zNear = 0.1f, float zFar = 100.0f);
 
-		const glm::vec3& GetPosition() const { return m_Position; }
+		virtual const glm::vec3& GetPosition() const override { return m_Position; }
 		inline void SetPosition(const glm::vec3& pos) { m_Position = pos; RecalculateViewMatrix(); }
 		inline void SetRotation(float angle) { m_angle = angle; RecalculateViewMatrix(); }
 
 		virtual const glm::mat4& GetViewProjectMatrix() const override { return m_ViewProjectMatrix; }
-		inline const glm::mat4& GetProjectMatrix() { return m_ProjectMatrix; }
-		inline const glm::mat4& GetViewMatrix() { return m_ViewMatrix; }
+		virtual const glm::mat4& GetProjectMatrix()const override { return m_ProjectMatrix; }
+		virtual const glm::mat4& GetViewMatrix()const override { return m_ViewMatrix; }
 
 		void SetProjectMatrix(float fov, float aspect, float zNear = 0.1f, float zFar = 1000.0f);
 

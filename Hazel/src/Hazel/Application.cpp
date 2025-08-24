@@ -66,6 +66,13 @@ namespace Hazel
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
+		if (e.GetHeight() == 0 || e.GetWidth() == 0)
+		{
+			m_Minimise = true;
+			return false;
+		}
+
+		m_Minimise = false;
 		Render::OnWindowResize(e.GetWidth(),e.GetHeight());
 
 		return false;
@@ -79,12 +86,14 @@ namespace Hazel
 			TimeStep timeStep=time-m_LastFramTime;
 			m_LastFramTime = time;
 
-
-			for (Layer* layer:m_LayerStack)
+			if (!m_Minimise)
 			{
-				layer->OnUpdate(timeStep);
+				for (Layer* layer : m_LayerStack)
+				{
+					layer->OnUpdate(timeStep);
+				}
 			}
-
+			
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
 			{

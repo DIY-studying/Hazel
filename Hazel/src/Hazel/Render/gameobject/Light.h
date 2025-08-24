@@ -1,0 +1,27 @@
+#pragma once
+#include <glm/ext/matrix_float4x4.hpp>
+
+namespace Hazel
+{
+	class Light
+	{
+	public:
+		Light(const glm::vec3 pos);
+		~Light();
+
+		void SetPos(const glm::vec3& pos) { m_Pos = pos; };
+
+		const glm::vec3& GetKa() const { return m_ka; };
+		const glm::vec3& GetKs() const { return m_ks; };
+		const glm::vec3& GetKd() const { return m_kd; };
+		const glm::vec3& GetPos() const { return m_Pos; };
+
+		const glm::vec3& GetAmbLightIntensity()const { return m_amb_light_Intensity; };
+		const glm::vec3& GetLightIntensity()const { return m_light_Intensity; };
+
+	private:
+		glm::vec3 m_Pos;
+		glm::vec3 m_amb_light_Intensity,m_light_Intensity;
+		glm::vec3 m_ka, m_ks, m_kd;
+	};
+}

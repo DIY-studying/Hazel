@@ -19,6 +19,7 @@ namespace Hazel
 		virtual const std::string& GetName() const override;
 
 		virtual void SetMat4(const std::string& name, const glm::mat4& mat) override { SetUniformMat4(mat,name); }
+		virtual void SetFloat3(const std::string& name, const glm::vec3& mat) override { SetUniformFloat3(mat,name); };
 		virtual void SetInt1(const std::string& name, int slot) override { SetUniformInt1(slot,name); }
 		//////////////////////////////////////////////////////////////////////////////////////
 

@@ -17,9 +17,12 @@
 #include "Hazel/Render/Buffer.h"
 #include "Hazel/Render/VertexArray.h"
 #include "Hazel/Render/gameobject/Camera.h"
+#include "Hazel/Render/gameobject/Light.h"
 #include "Hazel/Render/Render.h"
 #include "Hazel/Render/RenderCommand.h"
 //------------------------------------------
+
+#include "Hazel/Debug/Instrumentor.h"
 
 
 //---entry point-------------------
