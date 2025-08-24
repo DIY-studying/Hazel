@@ -9,3 +9,7 @@ bin-int/
 *.vcxproj
 *.filters
 *.ini
+
+HazelProfile-Runtime.json
+HazelProfile-Shutdown.json
+HazelProfile-Startup.json
