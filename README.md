@@ -1,7 +1,7 @@
 # Hazel
 Hazel Eigen
 
-- sb visual studio, fuck Microsoft Corporation. 
+<img src="descript/picture/2026-04-21 133951.png" alt="Hazel Engine" height="200">
 
 ## 11 Window Abstraction and GLFW
 

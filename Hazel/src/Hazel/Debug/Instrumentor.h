@@ -31,7 +31,11 @@ namespace Hazel {
 		~Instrumentor()
 		{
 			if (m_CurrentSession)
+			{
 				delete m_CurrentSession;
+				m_CurrentSession = nullptr;
+			}
+				
 		}
 		void BeginSession(const std::string& name, const std::string& filepath = "results.json")
 		{
@@ -98,7 +102,7 @@ namespace Hazel {
 			auto endTimepoint = std::chrono::high_resolution_clock::now();
 			long long start = std::chrono::time_point_cast<std::chrono::milliseconds>(m_StartTimepoint).time_since_epoch().count();
 			long long end = std::chrono::time_point_cast<std::chrono::milliseconds>(endTimepoint).time_since_epoch().count();
-			uint32_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
+			uint32_t threadID =(uint32_t)std::hash<std::thread::id>{}(std::this_thread::get_id());
 			Instrumentor::Get().WriteProfile({ m_Name, start, end, threadID });
 			m_Stopped = true;
 		}

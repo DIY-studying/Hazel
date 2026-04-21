@@ -17,6 +17,7 @@ namespace Hazel
 	{
 		m_SceneData->ViewMatrix = camera.GetViewMatrix();
 		m_SceneData->ProjectMatrix = camera.GetProjectMatrix();
+		m_SceneData->view_pos = camera.GetPosition();
 
 		m_SceneData->light_Pos = light.GetPos();
 		m_SceneData->light_ka = light.GetKa();

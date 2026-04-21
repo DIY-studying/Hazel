@@ -57,6 +57,12 @@ public:
 		ImGui::DragFloat("angle",&m_ModelAngle);
 		ImGui::DragFloat3("camera pos", &m_CamPosition[0]);
 		ImGui::DragFloat3("light pos", &m_LightPos[0]);
+		ImGui::Separator();
+		ImGui::DragFloat3("light ka", &m_light.GetKa()[0]);
+		ImGui::DragFloat3("light kd", &m_light.GetKd()[0]);
+		ImGui::DragFloat3("light ks", &m_light.GetKs()[0]);
+		ImGui::DragFloat3("light AmbLightIntensity", &m_light.GetAmbLightIntensity()[0]);
+		ImGui::DragFloat3("light LightIntensity", &m_light.GetLightIntensity()[0]);
 		ImGui::End();
 	}
 
