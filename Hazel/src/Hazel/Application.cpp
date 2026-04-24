@@ -2,7 +2,7 @@
 #include "Application.h"
 
 #include "Log.h"
-#include "Input.h"
+#include "Input/Input.h"
 #include <imgui.h>
 #include "GLFW/glfw3.h"
 #include "Hazel/Render/Render.h"

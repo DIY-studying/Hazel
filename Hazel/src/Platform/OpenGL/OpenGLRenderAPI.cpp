@@ -2,6 +2,7 @@
 #include "OpenGLRenderAPI.h"
 #include "glad/glad.h"
 
+
 namespace Hazel
 {
 	void OpenGLRenderAPI::Init()
@@ -18,8 +19,16 @@ namespace Hazel
 
 	void OpenGLRenderAPI::DrawIndex(const Ref<VertexArray>& vertexArray)
 	{
+		vertexArray->Bind();
 		glDrawElements(GL_TRIANGLES,vertexArray->GetIndexBuffer()->GetCount(),GL_UNSIGNED_INT,nullptr);
 	}
+
+	void OpenGLRenderAPI::DrawArray(const Ref<VertexArray>& VertexArray, uint32_t first, uint32_t count)
+	{
+		VertexArray->Bind();
+		glDrawArrays(GL_TRIANGLES,first, count);
+	}
+
 
 	void OpenGLRenderAPI::Clear()
 	{

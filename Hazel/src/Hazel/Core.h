@@ -49,4 +49,7 @@ namespace Hazel {
 	auto make_Ref(Args&&... args) -> decltype(std::make_shared<T>(std::forward<Args>(args)...)) {
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
+
+	// batch render
+	#define BATCH_TRIANGLE_COUNT  10000
 }

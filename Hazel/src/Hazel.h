@@ -7,9 +7,10 @@
 #include "Hazel/ImGui/ImGuiLayer.h"
 #include "Hazel/OrthoCameraController.h"
 
-#include "Hazel/Input.h"
-#include "Hazel/KeyCode.h"
-#include "Hazel/MouseButtonCode.h"
+//---Input----------------------------
+#include "Hazel/Input/Input.h"
+#include "Hazel/Input/KeyCode.h"
+#include "Hazel/Input/MouseButtonCode.h"
 
 //---Render--------------------------
 #include "Hazel/Render/Shader.h"
@@ -22,6 +23,7 @@
 #include "Hazel/Render/RenderCommand.h"
 //------------------------------------------
 
+//---profile--------------------------
 #include "Hazel/Debug/Instrumentor.h"
 
 

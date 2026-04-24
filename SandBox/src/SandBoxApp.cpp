@@ -1,27 +1,25 @@
 #include <Hazel.h>
 #include "Hazel/Core.h"
-#include "Hazel/Render/gameobject/Model.h"
+#include "Hazel/Render/gameobject/3D/Model.h"
 
 #include "imgui/imgui.h"
 
 #include "string.h"
 
+
 class  ExampleLayer:public Hazel::Layer
 {
 public:
 	ExampleLayer()
-		:Layer("Example"), fov(15),m_PerspectiveCamera(fov,1280/720),m_CamPosition(0,0,10),
-		m_ModelAngle(0), m_ModelPos(0), m_light(m_LightPos),m_LightPos(0)
+		:Layer("Example"), fov(15),m_CamPosition(0,0,10),
+		m_ModelAngle(0), m_ModelPos(0),m_LightPos(0)
 	{
+		m_PerspectiveCamera = Hazel::make_Ref<Hazel::PespectiveCamera>(fov, 1280 / 720);
+		m_light = Hazel::make_Ref<Hazel::Light>(m_LightPos);
 
-		m_VertexArray = Hazel::VertexArray::Creat();
-
-		std::vector<Hazel::Ref<Hazel::Model>> models = Hazel::Model::Creat("Assets/Model/spot_quadrangulated.obj");
+		std::vector<Hazel::Ref<Hazel::Model>> models = Hazel::Model::Creat("Assets/Model/spot_triangulated_good.obj");
 
 		m_Model = models[0];
-
-		m_VertexArray->AddVertexBuffer(m_Model->GetVertexBuffer());
-		m_VertexArray->SetIndexBuffer(m_Model->GetIndexBuffer());
 
 		m_ShaderLibrary.Load("Assets/Shader/ModelShader.glsl");
 		m_ShaderLibrary.Load("Assets/Shader/Bong-Phong.glsl");
@@ -58,11 +56,11 @@ public:
 		ImGui::DragFloat3("camera pos", &m_CamPosition[0]);
 		ImGui::DragFloat3("light pos", &m_LightPos[0]);
 		ImGui::Separator();
-		ImGui::DragFloat3("light ka", &m_light.GetKa()[0]);
-		ImGui::DragFloat3("light kd", &m_light.GetKd()[0]);
-		ImGui::DragFloat3("light ks", &m_light.GetKs()[0]);
-		ImGui::DragFloat3("light AmbLightIntensity", &m_light.GetAmbLightIntensity()[0]);
-		ImGui::DragFloat3("light LightIntensity", &m_light.GetLightIntensity()[0]);
+		ImGui::DragFloat3("light ka", &m_light->GetKa()[0]);
+		ImGui::DragFloat3("light kd", &m_light->GetKd()[0]);
+		ImGui::DragFloat3("light ks", &m_light->GetKs()[0]);
+		ImGui::DragFloat3("light AmbLightIntensity", &m_light->GetAmbLightIntensity()[0]);
+		ImGui::DragFloat3("light LightIntensity", &m_light->GetLightIntensity()[0]);
 		ImGui::End();
 	}
 
@@ -79,10 +77,10 @@ public:
 		else if (Hazel::Input::IsKeyPressed(HZ_KEY_RIGHT))
 			m_CamPosition.x += m_MoveSpeed * ts;
 		
-		m_PerspectiveCamera.SetPosition(m_CamPosition);
+		m_PerspectiveCamera->SetPosition(m_CamPosition);
 		m_Model->SetPosition(m_ModelPos);
 		m_Model->SetAngle(m_ModelAngle);
-		m_light.SetPos(m_LightPos);
+		m_light->SetPos(m_LightPos);
 
 
 		Hazel::RenderCommand::SetClearColor({ 0.2f,0.2f,0.2f,1.0f });
@@ -92,10 +90,14 @@ public:
 
 		shader->SetInt1("u_Texture",0);
 
-		Hazel::Render::BeginScene(m_PerspectiveCamera,m_light);
+		std::vector<Hazel::Ref<Hazel::GameObject>> gameobjs;
+		gameobjs.push_back(m_light);
+		gameobjs.push_back(m_Model);
+
+		Hazel::Render::BeginScene(m_PerspectiveCamera, shader);
 		m_Texture->Bind();
 		shader->SetMat4("u_ModelMatrix", m_Model->GetModelMatrix());
-		Hazel::Render::Submit(shader, m_VertexArray);
+		Hazel::Render::Submit(gameobjs);
 		Hazel::Render::EndScene();
 	}
 private:
@@ -107,14 +109,13 @@ private:
 	glm::vec3 m_ModelPos;
 	float m_ModelAngle;
 
-	Hazel::Light m_light;
+	Hazel::Ref<Hazel::Light> m_light;
 
 	Hazel::Ref < Hazel::Model> m_Model;
 
 	Hazel::ShaderLibrary m_ShaderLibrary;
-	Hazel::PespectiveCamera m_PerspectiveCamera;
+	Hazel::Ref<Hazel::PespectiveCamera> m_PerspectiveCamera;
 
-	Hazel::Ref<Hazel::VertexArray> m_VertexArray;
 	Hazel::Ref<Hazel::Texture> m_Texture;
 
 	

@@ -6,41 +6,46 @@
 #include "Shader.h"
 #include "RenderCommand.h"
 #include "Hazel/Render/gameobject/Light.h"
+#include "gameobject/Component/Mesh.h"
 
 namespace Hazel
 {
+	// global data
+	struct  SceneData
+	{
+		std::vector<Ref<Mesh>> meshs;
+
+		glm::mat4 projectMatrix;
+		glm::mat4 viewMatrix;
+
+	};
+
+
 	class  Render
 	{
 	public:
 		static void Init();
 
-		static void BeginScene(const Camera& camera);
-		static void BeginScene(const Camera& camera,const Light& light);
+		static void BeginScene(const Ref<Camera>& camera, const Ref<Shader>& shader);
 		static void EndScene();
 
-		static void Submit(const Ref<Shader>& shader,const Ref<VertexArray>& vertexArray);
+		static void Submit(const std::vector<Ref<GameObject>>& gameObjes);
+
+		static void Flush();
+
+		static Ref<SceneData> GetSceneData() ;
 
 		// events
-		inline static void OnWindowResize(uint32_t width,uint32_t height) 
+		inline static void OnWindowResize(uint32_t width, uint32_t height)
 		{
-			RenderCommand::SetViewPort(0,0,width,height);
-		}
-
-		inline static RenderAPI::API GetAPI() { return RenderCommand::GetAPI(); }
-	private:
-		struct  SceneData
-		{
-			glm::mat4 ViewMatrix;
-			glm::mat4 ProjectMatrix;
-			glm::vec3 view_pos;
-
-			//Light
-			glm::vec3 light_Pos;
-			glm::vec3 light_amb_Intensity, light_Intensity;
-			glm::vec3 light_ka, light_ks, light_kd;
+			RenderCommand::SetViewPort(0, 0, width, height);
 		};
 
-		static SceneData* m_SceneData;
+		inline static RenderAPI::API GetAPI() { return RenderCommand::GetAPI(); }
+
+	private:
+		static  Ref<SceneData> m_SceneData;
+		
 	};
 
 }

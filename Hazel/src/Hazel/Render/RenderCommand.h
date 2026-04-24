@@ -22,6 +22,12 @@ namespace Hazel {
 		{
 			m_RenderAPI->DrawIndex(vertexArray);
 		}
+
+		inline static void  DrawArray(const Ref<VertexArray>& vertexArray, uint32_t first, uint32_t count)
+		{
+			m_RenderAPI->DrawArray(vertexArray,first,count);
+		}
+
 		inline static void SetClearColor(const glm::vec4 color)
 		{
 			m_RenderAPI->SetClearColor(color);

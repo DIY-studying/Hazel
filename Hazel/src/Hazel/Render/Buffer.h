@@ -82,15 +82,16 @@ namespace Hazel
 	class  VertexBuffer
 	{
 	public:
-
-
 		virtual void Bind() const = 0;
 		virtual void UnBind() const = 0;
 
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
+		virtual void SetData(void* data, uint32_t size)=0;
+
 
 		static Ref<VertexBuffer> Creat(float* vertexs, uint32_t size);
+		static Ref<VertexBuffer> Creat(uint32_t size);
 	};
 
 	class IndexBuffer
@@ -101,7 +102,9 @@ namespace Hazel
 		virtual void UnBind() const = 0;
 
 		virtual uint32_t GetCount() = 0;
+		virtual void SetData(void* data, uint32_t count) = 0;
 
 		static Ref<IndexBuffer> Creat(uint32_t* indexs, uint32_t count);
+		static Ref<IndexBuffer> Creat(uint32_t count);
 	};
 }

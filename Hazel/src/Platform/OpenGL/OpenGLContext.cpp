@@ -22,4 +22,14 @@ namespace Hazel
 		glfwSwapBuffers(m_Window);
 	}
 
+	void OpenGLContext::PrintVersionInfo()
+	{
+		const char* version = (const char*)glGetString(GL_VERSION);			// 版本
+		const char* vendor = (const char*)glGetString(GL_VENDOR);				// 显卡厂商
+		const char* renderer = (const char*)glGetString(GL_RENDERER);		// 显卡型号
+
+
+		HZ_CORE_INFO("OpenGL 版本: {0},厂商: {1}, 显卡: {2} ", version, vendor, renderer);
+	}
+
 }

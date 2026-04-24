@@ -52,6 +52,7 @@ namespace Hazel
 
 		context = new OpenGLContext(m_Window);
 		context->Init();
+		context->PrintVersionInfo();
 		
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);

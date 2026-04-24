@@ -1,6 +1,15 @@
+//
+// Created by LEI XU on 4/28/19.
+//
+//
 // This loader is created by Robert Smith.
 // https://github.com/Bly7/OBJ-Loader
 // Use the MIT license.
+
+
+#ifndef RASTERIZER_OBJ_LOADER_H
+#define RASTERIZER_OBJ_LOADER_H
+
 #pragma once
 
 
@@ -939,7 +948,7 @@ namespace objl
                     }
 
                     // If Vertex is not an interior vertex
-                    float angle = math::AngleBetweenV3(pPrev.Position - pCur.Position, pNext.Position - pCur.Position) * (180 / 3.14159265359f);
+                    float angle = math::AngleBetweenV3(pPrev.Position - pCur.Position, pNext.Position - pCur.Position) * (180 / 3.14159265359);
                     if (angle <= 0 && angle >= 180)
                         continue;
 
@@ -1158,4 +1167,4 @@ namespace objl
         }
     };
 }
-
+#endif //RASTERIZER_OBJ_LOADER_H

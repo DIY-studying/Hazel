@@ -14,6 +14,8 @@
 
 #include<Hazel/Log.h>
 
+// glm vec,matrix,method
+#include <glm/ext/matrix_transform.hpp>
 
 #ifdef  HZ_PLATFORM_WINDOWS
 		#include<Windows.h>

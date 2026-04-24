@@ -14,6 +14,8 @@ namespace Hazel
 
 		virtual void Init() override;
 		virtual void SwapBuffer() override;
+
+		virtual void PrintVersionInfo() override;
 	private:
 		GLFWwindow* m_Window;
 	};

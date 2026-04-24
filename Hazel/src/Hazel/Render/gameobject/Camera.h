@@ -1,15 +1,19 @@
 #pragma once
 #include <glm/ext/matrix_float4x4.hpp>
+#include "Hazel/Render/gameobject/GameObject.h"
+
 
 namespace Hazel {
 
-	class Camera
+	class Camera :public GameObject
 	{
 	public:
 		virtual const glm::mat4& GetViewProjectMatrix() const = 0;
 		virtual const glm::vec3& GetPosition()  const = 0;
 		virtual const glm::mat4& GetProjectMatrix()const = 0;
 		virtual const glm::mat4& GetViewMatrix() const = 0;
+	protected:
+		Camera(const glm::vec3& pos) : GameObject(pos) {};
 	};
 
 	class OrthoCamera: public Camera
@@ -17,9 +21,10 @@ namespace Hazel {
 	public:
 		OrthoCamera(float left, float right, float bottom, float top, float zNear = -1.0f, float zFar = 1.0f);
 
-		virtual const glm::vec3& GetPosition() const override  { return m_Position; }
-		inline void SetPosition(const glm::vec3& pos) { m_Position = pos; RecalculateViewMatrix(); }
+		virtual const glm::vec3& GetPosition() const override  { return m_pos; }
+		inline void SetPosition(const glm::vec3& pos) { m_pos = pos; RecalculateViewMatrix(); }
 		inline void SetRotation(float angle) { m_angle = angle; RecalculateViewMatrix(); }
+
 
 		virtual const glm::mat4& GetViewProjectMatrix() const override { return m_ViewProjectMatrix; }
 		virtual const glm::mat4& GetProjectMatrix() const override { return m_ProjectMatrix; }
@@ -35,7 +40,6 @@ namespace Hazel {
 		glm::mat4 m_ViewMatrix;
 		glm::mat4 m_ViewProjectMatrix;
 
-		glm::vec3 m_Position;
 		float m_angle;
 	};
 
@@ -44,8 +48,10 @@ namespace Hazel {
 	public:
 		PespectiveCamera(float fov, float aspect, float zNear = 0.1f, float zFar = 100.0f);
 
-		virtual const glm::vec3& GetPosition() const override { return m_Position; }
-		inline void SetPosition(const glm::vec3& pos) { m_Position = pos; RecalculateViewMatrix(); }
+		virtual void Submit(const Ref<Shader>& shader) override;
+
+		virtual const glm::vec3& GetPosition() const override { return m_pos; }
+		inline void SetPosition(const glm::vec3& pos) { m_pos = pos; RecalculateViewMatrix(); }
 		inline void SetRotation(float angle) { m_angle = angle; RecalculateViewMatrix(); }
 
 		virtual const glm::mat4& GetViewProjectMatrix() const override { return m_ViewProjectMatrix; }
@@ -62,7 +68,6 @@ namespace Hazel {
 		glm::mat4 m_ViewMatrix;
 		glm::mat4 m_ViewProjectMatrix;
 
-		glm::vec3 m_Position;
 		float m_angle;
 	};
 }
