@@ -32,7 +32,7 @@ namespace Hazel
 
 		m_vb->SetLayout(Vertex::Layout());
 		m_VertexArray = VertexArray::Creat();
-		m_VertexArray->AddVertexBuffer(m_vb);
+		m_VertexArray->SetVertexBuffer(m_vb);
 		m_VertexArray->SetIndexBuffer(m_ib);
 	}
 

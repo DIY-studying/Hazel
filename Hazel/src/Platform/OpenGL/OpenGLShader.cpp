@@ -1,6 +1,6 @@
 #include "hzpch.h"
 #include "OpenGLShader.h"
-
+#include "OpenGLError.h"
 #include "glm/gtc/type_ptr.hpp"
 
 namespace Hazel
@@ -42,17 +42,17 @@ namespace Hazel
 	}
 	OpenGLShader::~OpenGLShader()
 	{
-		glDeleteProgram(m_RenderID);
+		GLCall(glDeleteProgram(m_RenderID));
 	}
 
 	void OpenGLShader::Bind() const
 	{
-		glUseProgram(m_RenderID);
+		GLCall(glUseProgram(m_RenderID));
 	}
 
 	void OpenGLShader::UnBind() const
 	{
-		glUseProgram(0);
+		GLCall(glUseProgram(0));
 	}
 
 	const std::string& OpenGLShader::GetName() const

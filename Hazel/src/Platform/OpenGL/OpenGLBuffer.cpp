@@ -1,6 +1,6 @@
 #include "hzpch.h"
 #include "OpenGLBuffer.h"
-
+#include "OpenGLError.h"
 #include "glad/glad.h"
 
 namespace Hazel
@@ -13,35 +13,35 @@ namespace Hazel
 	OpenGLVertexBuffer::OpenGLVertexBuffer( uint32_t size)
 		:m_RenderID(0)
 	{
-		glGenBuffers(1, &m_RenderID);
-		glBindBuffer(GL_ARRAY_BUFFER, m_RenderID);
-		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+		GLCall(glGenBuffers(1, &m_RenderID));
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RenderID));
+		GLCall(glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW));
 
 	}
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertexs, uint32_t size)
 		:m_RenderID(0)
 	{
-		glGenBuffers(1, &m_RenderID);
-		glBindBuffer(GL_ARRAY_BUFFER, m_RenderID);
-		glBufferData(GL_ARRAY_BUFFER, size, vertexs, GL_STATIC_DRAW);
+		GLCall(glGenBuffers(1, &m_RenderID));
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RenderID));
+		GLCall(glBufferData(GL_ARRAY_BUFFER, size, vertexs, GL_STATIC_DRAW));
 
 	}
 
 	void OpenGLVertexBuffer::SetData(void* data, uint32_t size)
 	{
 		Bind();
-		glBufferSubData(GL_ARRAY_BUFFER,0, size ,data);
+		GLCall(glBufferSubData(GL_ARRAY_BUFFER,0, size ,data));
 	}
 
 	void OpenGLVertexBuffer::Bind() const
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, m_RenderID);
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RenderID));
 	}
 
 	void OpenGLVertexBuffer::UnBind() const
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	}
 
 	const BufferLayout& OpenGLVertexBuffer::GetLayout() const
@@ -56,7 +56,7 @@ namespace Hazel
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
-		glDeleteBuffers(1, &m_RenderID);
+		GLCall(glDeleteBuffers(1, &m_RenderID));
 	}
 
 
@@ -67,41 +67,41 @@ namespace Hazel
 	OpenGLIndexBuffer::OpenGLIndexBuffer( uint32_t count)
 		:m_RenderID(0), m_Count(count)
 	{
-		glGenBuffers(1, &m_RenderID);
+		GLCall(glGenBuffers(1, &m_RenderID));
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RenderID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * count, nullptr, GL_DYNAMIC_DRAW);
+		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RenderID));
+		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * count, nullptr, GL_DYNAMIC_DRAW));
 	}
 
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indexs, uint32_t count)
 		:m_RenderID(0),m_Count(count)
 	{
-		glGenBuffers(1,&m_RenderID);
+		GLCall(glGenBuffers(1,&m_RenderID));
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RenderID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t)*count, indexs, GL_STATIC_DRAW);
+		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RenderID));
+		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t)*count, indexs, GL_STATIC_DRAW));
 	}
 
 	void OpenGLIndexBuffer::SetData(void* data, uint32_t count)
 	{
 		Bind();
-		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(uint32_t) * count, data);
+		GLCall(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(uint32_t) * count, data));
 	}
 
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
 	{
-		glDeleteBuffers(1, &m_RenderID);
+		GLCall(glDeleteBuffers(1, &m_RenderID));
 	}
 	
 	void OpenGLIndexBuffer::Bind() const
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, m_RenderID);
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RenderID));
 	}
 
 	void OpenGLIndexBuffer::UnBind() const
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	}
 
 }

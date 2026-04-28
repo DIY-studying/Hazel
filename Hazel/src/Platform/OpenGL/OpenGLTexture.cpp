@@ -1,6 +1,6 @@
 #include "hzpch.h"
 #include "OpenGLTexture.h"
-
+#include "OpenGLError.h"
 #include "stb_image.h"
 #include "glad/glad.h"
 
@@ -30,29 +30,29 @@ namespace Hazel {
 			HZ_CORE_ERROR("Texture format not support!");
 		}
 
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_RenderID);
-		glTextureStorage2D(m_RenderID,1, internalFormat, m_Width, m_Height);
+		GLCall(glCreateTextures(GL_TEXTURE_2D, 1, &m_RenderID));
+		GLCall(glTextureStorage2D(m_RenderID,1, internalFormat, m_Width, m_Height));
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
-		glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, format, GL_UNSIGNED_BYTE, data);
+		GLCall(glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, format, GL_UNSIGNED_BYTE, data));
 
 		stbi_image_free((void*)data);
 	}
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
-		glDeleteTextures(1,&m_RenderID);
+		GLCall(glDeleteTextures(1,&m_RenderID));
 	}
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const
 	{
-		glBindTextureUnit(slot,m_RenderID);
+		GLCall(glBindTextureUnit(slot,m_RenderID));
 	}
 
 	void OpenGLTexture2D::UnBind() const
 	{
-		glBindTexture(m_RenderID,0);
+		GLCall(glBindTexture(m_RenderID,0));
 	}
 }

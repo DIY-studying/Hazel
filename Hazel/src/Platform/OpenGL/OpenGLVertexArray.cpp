@@ -1,6 +1,6 @@
 #include "hzpch.h"
 #include "OpenGLVertexArray.h"
-
+#include "OpenGLError.h"
 #include "glad/glad.h"
 #include "Hazel/Render/Buffer.h"
 
@@ -20,46 +20,47 @@ namespace Hazel
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{	
-		glGenVertexArrays(1, &m_RenderID);
+		GLCall(glGenVertexArrays(1, &m_RenderID));
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
 	{
-		glDeleteVertexArrays(1, &m_RenderID);
+		GLCall(glDeleteVertexArrays(1, &m_RenderID));
 	}
 
 	void OpenGLVertexArray::Bind() const
 	{
-		glBindVertexArray(m_RenderID);
+		GLCall(glBindVertexArray(m_RenderID));
 	}
 
 
 	void OpenGLVertexArray::UnBind() const
 	{
-		glBindVertexArray(0);
+		GLCall(glBindVertexArray(0));
 	}
 
-	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
+	void OpenGLVertexArray::SetVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
 	{
 		HZ_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "vertexBuffer don't set layout.");
 
-		glBindVertexArray(m_RenderID);
+
+		Bind();
 		vertexBuffer->Bind();
 
 		unsigned int index = 0;
 		for (const auto& element : vertexBuffer->GetLayout())
 		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, element.Count, ShaderDataTypeToOpenGLType(element.Type), element.Normalize ? GL_TRUE : GL_FALSE, vertexBuffer->GetLayout().GetStride(), (const void*)(uintptr_t)element.Offset);
+			GLCall(glEnableVertexAttribArray(index));
+			GLCall(glVertexAttribPointer(index, element.Count, ShaderDataTypeToOpenGLType(element.Type), element.Normalize ? GL_TRUE : GL_FALSE, vertexBuffer->GetLayout().GetStride(), (const void*)(uintptr_t)element.Offset));
 			index++;
 		}
 
-		m_VertexBuffers.push_back(vertexBuffer);
+		m_VertexBuffers = vertexBuffer;
 	}
 
 	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 	{
-		glBindVertexArray(m_RenderID);
+		Bind();
 		indexBuffer->Bind();
 
 		m_IndexBuffer = indexBuffer;

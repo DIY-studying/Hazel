@@ -2,9 +2,11 @@
 #include "OpenGLContext.h"
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include "OpenGLError.h"
 
 namespace Hazel
 {
+	
 	OpenGLContext::OpenGLContext(GLFWwindow* window)
 		:m_Window(window)
 	{
