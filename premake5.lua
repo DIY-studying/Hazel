@@ -16,9 +16,9 @@ IncludeDir={}
 IncludeDir["GLFW"]="Hazel/vendor/GLFW/include"
 IncludeDir["Glad"]="Hazel/vendor/glad/include"
 IncludeDir["ImGui"]="Hazel/vendor/imgui"
-IncludeDir["glm"]="Hazel/vendor/glm"
 IncludeDir["stb"]="Hazel/vendor/stb_image"
 IncludeDir["OBJ"]="Hazel/vendor/OBJ_Loader"
+IncludeDir["eigen"]="Hazel/vendor/eigen-5.0.0/"
 
 group "Dependence"
   include "Hazel/vendor/GLFW"
@@ -49,9 +49,6 @@ project "Hazel"
      "%{prj.name}/vendor/stb_image/**.h",
      -- OBJ_Loader
      "%{prj.name}/vendor/OBJ_Loader/**.h",
-     -- include glm source file
-     "%{prj.name}/vendor/glm/glm/**.hpp",
-     "%{prj.name}/vendor/glm/glm/**.inl",
    }
 
    defines
@@ -68,7 +65,7 @@ project "Hazel"
     "%{IncludeDir.Glad}",
     "%{IncludeDir.ImGui}",
     "%{IncludeDir.ImGui}/backends",
-    "%{IncludeDir.glm}",
+    "%{IncludeDir.eigen}",
     "%{IncludeDir.stb}",
     "%{IncludeDir.OBJ}",
    }
@@ -138,7 +135,7 @@ project "Sandbox"
    {
     "Hazel/vendor/spdlog/include",
     "Hazel/src",
-    "%{IncludeDir.glm}",
+    "%{IncludeDir.eigen}",
     "Hazel/vendor"
    }
 
