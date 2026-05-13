@@ -15,7 +15,7 @@ namespace Hazel {
 		virtual void DrawArray(const Ref<VertexArray>& vertexArray, uint32_t first, uint32_t count) override;
 
 		virtual void Clear() override;
-		virtual void SetClearColor(const glm::vec4& color) override;
+		virtual void SetClearColor(const Eigen::Vector4f& color) override;
 
 	};
 }

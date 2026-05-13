@@ -1,7 +1,6 @@
 #pragma once
 
 #include "VertexArray.h"
-#include <glm/ext/vector_float4.hpp>
 
 namespace Hazel {
 
@@ -20,7 +19,7 @@ namespace Hazel {
 		virtual void DrawIndex(const Ref<VertexArray>& vertexArray) = 0;
 		virtual void DrawArray(const Ref<VertexArray>& vertexArray,uint32_t first,uint32_t count) = 0;
 		virtual void Clear() = 0;
-		virtual void SetClearColor(const glm::vec4& color ) = 0;
+		virtual void SetClearColor(const Eigen::Vector4f& color ) = 0;
 
 
 

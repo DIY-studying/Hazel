@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <glm/ext/matrix_float4x4.hpp>
 #include <unordered_map>
 
 namespace Hazel
@@ -15,8 +14,8 @@ namespace Hazel
 		virtual void UnBind() const = 0;
 		virtual const std::string& GetName() const = 0;
 
-		virtual void SetMat4(const std::string& name,const glm::mat4& mat) = 0;
-		virtual void SetFloat3(const std::string& name, const glm::vec3& mat)=0;
+		virtual void SetMat4(const std::string& name,const Eigen::Matrix4f& mat) = 0;
+		virtual void SetFloat3(const std::string& name, const Eigen::Vector3f& mat)=0;
 		virtual void SetInt1(const std::string& name, int slot) = 0;
 
 	public:

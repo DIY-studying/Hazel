@@ -96,12 +96,12 @@ namespace Hazel
 	
 	void OpenGLIndexBuffer::Bind() const
 	{
-		GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RenderID));
+		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RenderID));
 	}
 
 	void OpenGLIndexBuffer::UnBind() const
 	{
-		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 	}
 
 }

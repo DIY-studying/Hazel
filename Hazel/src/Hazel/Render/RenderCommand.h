@@ -28,7 +28,7 @@ namespace Hazel {
 			m_RenderAPI->DrawArray(vertexArray,first,count);
 		}
 
-		inline static void SetClearColor(const glm::vec4 color)
+		inline static void SetClearColor(const Eigen::Vector4f& color)
 		{
 			m_RenderAPI->SetClearColor(color);
 		}

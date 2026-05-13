@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Hazel/Render/gameobject/Camera.h"
-#include "glm/mat4x4.hpp"
 #include "Hazel/Core/Time.h"
 #include "Hazel/Events/MouseEvent.h"
 #include "Hazel/Events/ApplicationEvent.h"
@@ -31,7 +30,7 @@ namespace Hazel {
 		float m_ZoomLevel;
 		OrthoCamera m_Camera;
 		
-		glm::vec3 m_Position;
+		Eigen::Vector3f m_Position;
 		float m_angle;
 		bool m_IsRation;
 

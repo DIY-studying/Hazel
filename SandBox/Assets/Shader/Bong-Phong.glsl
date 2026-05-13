@@ -7,7 +7,6 @@ layout(location=2) in vec2 a_TexCor;
 
 uniform mat4 u_ProjectMatrix;
 uniform mat4 u_ViewMatrix;
-uniform mat4 u_ModelMatrix;
 
 smooth out vec2 v_TexCor;	
 smooth out vec3 v_Position;
@@ -15,13 +14,12 @@ smooth out vec3 v_Nor;
 
 void main()
 {
-	 mat3 normalMatrix = mat3(transpose(inverse(u_ModelMatrix)));
-    v_Nor = normalMatrix * a_Nor; 
+    v_Nor = a_Nor; 
 
 	v_TexCor=a_TexCor;
-	v_Position=vec3(u_ModelMatrix*vec4(a_Position,1.0f));
+	v_Position=a_Position;
 
-	gl_Position=u_ProjectMatrix*u_ViewMatrix*u_ModelMatrix*vec4(a_Position,1.0f);
+	gl_Position=u_ProjectMatrix*u_ViewMatrix*vec4(a_Position,1.0f);
 }
 
 

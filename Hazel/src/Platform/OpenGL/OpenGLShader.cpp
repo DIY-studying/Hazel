@@ -1,7 +1,6 @@
 #include "hzpch.h"
 #include "OpenGLShader.h"
 #include "OpenGLError.h"
-#include "glm/gtc/type_ptr.hpp"
 
 namespace Hazel
 {
@@ -62,26 +61,26 @@ namespace Hazel
 	
 
 
-	void OpenGLShader::SetUniformMat4(const glm::mat4& matrix, const std::string& name)
+	void OpenGLShader::SetUniformMat4(const Eigen::Matrix4f& matrix, const std::string& name)
 	{
 		GLint location = GetLocation(m_RenderID, name);
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		glUniformMatrix4fv(location, 1, GL_FALSE, matrix.data());
 	}
-	void OpenGLShader::SetUniformMat3(const glm::mat3& matrix, const std::string& name)
+	void OpenGLShader::SetUniformMat3(const Eigen::Matrix3f& matrix, const std::string& name)
 	{
 		GLint location = GetLocation(m_RenderID, name);
-		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		glUniformMatrix3fv(location, 1, GL_FALSE, matrix.data());
 	}
 
-	void OpenGLShader::SetUniformFloat3(const glm::vec3& vector, const std::string& name)
+	void OpenGLShader::SetUniformFloat3(const Eigen::Vector3f& vector, const std::string& name)
 	{
 		GLint location = GetLocation(m_RenderID, name);
-		glUniform3fv(location, 1, glm::value_ptr(vector));
+		glUniform3fv(location, 1, vector.data());
 	}
-	void OpenGLShader::SetUniformFloat4(const glm::vec4& vector, const std::string& name)
+	void OpenGLShader::SetUniformFloat4(const Eigen::Vector4f& vector, const std::string& name)
 	{
 		GLint location = GetLocation(m_RenderID, name);
-		glUniform4fv(location, 1, glm::value_ptr(vector));
+		glUniform4fv(location, 1, vector.data());
 	}
 	void OpenGLShader::SetUniformInt1(int slot, const std::string& name)
 	{

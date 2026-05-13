@@ -23,13 +23,13 @@ namespace Hazel {
 	void OrthoCameraController::OnUpdate(TimeStep ts)
 	{
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_DOWN))
-			m_Position.y -= m_MoveSpeed * ts;
+			m_Position.y() -= m_MoveSpeed * ts;
 		else if (Hazel::Input::IsKeyPressed(HZ_KEY_UP))
-			m_Position.y += m_MoveSpeed * ts;
+			m_Position.y() += m_MoveSpeed * ts;
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT))
-			m_Position.x -= m_MoveSpeed * ts;
+			m_Position.x() -= m_MoveSpeed * ts;
 		else if (Hazel::Input::IsKeyPressed(HZ_KEY_RIGHT))
-			m_Position.x += m_MoveSpeed * ts;
+			m_Position.x() += m_MoveSpeed * ts;
 
 		if (m_IsRation)
 		{
@@ -39,8 +39,8 @@ namespace Hazel {
 				m_angle += m_RotateSpeed * ts;
 		}
 
-		m_Camera.SetPosition(m_Position);
-		m_Camera.SetRotation(m_angle);
+		m_Camera.SetPos(m_Position);
+		m_Camera.SetAngle(Eigen::Vector3f(0, 0, m_angle));
 	}
 
 	bool OrthoCameraController::OnMourseScoll(MouseScrolledEvent& e)

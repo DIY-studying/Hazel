@@ -1,9 +1,8 @@
 #include "hzpch.h"
 #include "Model.h"
 #include "OBJ_Loader.h"
-#include <glm/ext/matrix_transform.hpp>
-#include <Hazel/Render/gameobject/Component/Mesh.h>
 #include "Hazel/Render/Render.h"
+#include "Hazel/Render/gameobject/Component/CMesh.h"
 
 namespace Hazel {
 
@@ -16,7 +15,11 @@ namespace Hazel {
 		layout.Push<float>(2);
 		return layout;
 	}
-
+	
+	static size_t ObjlVertexSize()
+	{
+		return sizeof(objl::Vertex);
+	}
 
 
 	std::vector<Ref<Model>> Model::Creat(const std::string objPath)
@@ -33,12 +36,18 @@ namespace Hazel {
 		for (auto& mesh : loader.LoadedMeshes)
 		{
 			Ref<Model> model = make_Ref<Model>(mesh.MeshName);
-			model->AddMesh();
-			Ref<Mesh> model_mesh = model->GetMesh();
 
-			uint32_t size = (uint32_t)(mesh.Vertices.size() * sizeof(objl::Vertex));
-			model_mesh->vertexs = reinterpret_cast<std::vector<Vertex>&&>(mesh.Vertices);
-			model_mesh->Indices = reinterpret_cast<std::vector<uint32_t>&&>(mesh.Indices);
+			uint32_t size = (uint32_t)(mesh.Vertices.size() * ObjlVertexSize());
+			std::vector<Vertex> vertices;
+			vertices.reserve(mesh.Vertices.size());
+			for (int i = 0;i < mesh.Vertices.size();i++)
+			{
+				vertices.push_back({ {mesh.Vertices[i].Position.X, mesh.Vertices[i].Position.Y, mesh.Vertices[i].Position.Z},
+					{mesh.Vertices[i].Normal.X, mesh.Vertices[i].Normal.Y, mesh.Vertices[i].Normal.Z},
+					{mesh.Vertices[i].TextureCoordinate.X, mesh.Vertices[i].TextureCoordinate.Y},
+					{1.0f,1.0f,1.0f} });
+			}
+			model->AddComponent<CMesh>(reinterpret_cast<std::vector<Vertex>&&>(vertices), reinterpret_cast<std::vector<uint32_t>&&>(mesh.Indices));
 
 			models.push_back(model);
 		}
@@ -46,31 +55,14 @@ namespace Hazel {
 		return models;
 	}
 
-	bool Model::AddMesh()
-	{
-		if (m_mesh)
-			return false;
-		m_mesh = make_Ref<Mesh>();
-		Render::GetSceneData()->meshs.push_back(m_mesh);
-		return true;
-	}
-
 	Model::Model(const std::string& name)
-		:GameObject(glm::vec3()), m_Name(name), m_Angle(0)
+		:GameObject(), m_Name(name)
 	{
-		m_ModelMatrix = glm::mat4();
+
 	}
 
 	Model::~Model()
 	{
-	}
-
-	void Model::CalculateModelMatrix()
-	{
-		glm::mat4 translate = glm::translate(glm::mat4(1.0f), m_pos);
-		glm::mat4 rotate=glm::rotate(glm::mat4(1.0f),m_Angle,glm::vec3(0,1,0));
-		glm::mat4 scale = glm::mat4(1.0f);
-		m_ModelMatrix = scale*translate* rotate;
 	}
 
 }

@@ -31,6 +31,7 @@
 
 
 #define BIT(x)  (1<<x)
+#define PI 3.141592653589793238462643383279502884197169399375105820974944592307816406L
 
 #define HZ_BIND_EVENT_FN(x) std::bind(&x,this,std::placeholders::_1)
 

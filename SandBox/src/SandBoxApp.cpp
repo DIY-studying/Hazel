@@ -1,6 +1,7 @@
 #include <Hazel.h>
 #include "Hazel/Core.h"
 #include "Hazel/Render/gameobject/3D/Model.h"
+#include "Hazel/Render/gameobject/3D/Cube.h"
 
 #include "imgui/imgui.h"
 
@@ -12,10 +13,10 @@ class  ExampleLayer:public Hazel::Layer
 public:
 	ExampleLayer()
 		:Layer("Example"), fov(15),m_CamPosition(0,0,10),
-		m_ModelAngle(0), m_ModelPos(0),m_LightPos(0)
+		m_ModelAngle(), m_ModelPos(), m_LightPos(), m_cubeposition()
 	{
-		m_PerspectiveCamera = Hazel::make_Ref<Hazel::PespectiveCamera>(fov, 1280 / 720);
-		m_light = Hazel::make_Ref<Hazel::Light>(m_LightPos);
+		m_PerspectiveCamera = Hazel::make_Ref<Hazel::PespectiveCamera>(fov, 1280.0f / 720.0f);
+		m_light = Hazel::make_Ref<Hazel::Light>();
 
 		std::vector<Hazel::Ref<Hazel::Model>> models = Hazel::Model::Creat("Assets/Model/spot_triangulated_good.obj");
 
@@ -23,6 +24,8 @@ public:
 
 		m_ShaderLibrary.Load("Assets/Shader/ModelShader.glsl");
 		m_ShaderLibrary.Load("Assets/Shader/Bong-Phong.glsl");
+
+		m_cube= Hazel::make_Ref<Hazel::Cube>();
 		
 
 		m_Texture = Hazel::Texture2D::Creat("Assets/Texture/spot_texture.png");
@@ -39,11 +42,11 @@ public:
 		float x=e.GetYoffset();
 		if (x == -1)
 		{
-			m_CamPosition.z += m_MoveSpeed;
+			m_CamPosition.z() += m_MoveSpeed;
 		}
 		else if (x == 1)
 		{
-			m_CamPosition.z -= m_MoveSpeed;
+			m_CamPosition.z() -= m_MoveSpeed;
 		}
 		return false;
 	}
@@ -52,8 +55,9 @@ public:
 	{
 		ImGui::Begin("debug");
 		ImGui::DragFloat3("model pos",&m_ModelPos[0]);
-		ImGui::DragFloat("angle",&m_ModelAngle);
+		ImGui::DragFloat3("angle",&m_ModelAngle[0]);
 		ImGui::DragFloat3("camera pos", &m_CamPosition[0]);
+		ImGui::DragFloat3("cube pos", &m_cubeposition[0]);
 		ImGui::DragFloat3("light pos", &m_LightPos[0]);
 		ImGui::Separator();
 		ImGui::DragFloat3("light ka", &m_light->GetKa()[0]);
@@ -66,21 +70,22 @@ public:
 
 	void OnUpdate(Hazel::TimeStep ts) override
 	{
-		HZ_PROFILE_FUNCTION();
 
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_DOWN))
-			m_CamPosition.y -= m_MoveSpeed * ts;
+			m_CamPosition.y() -= m_MoveSpeed * ts;
 		else if (Hazel::Input::IsKeyPressed(HZ_KEY_UP))
-			m_CamPosition.y += m_MoveSpeed * ts;
+			m_CamPosition.y() += m_MoveSpeed * ts;
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT))
-			m_CamPosition.x -= m_MoveSpeed * ts;
+			m_CamPosition.x() -= m_MoveSpeed * ts;
 		else if (Hazel::Input::IsKeyPressed(HZ_KEY_RIGHT))
-			m_CamPosition.x += m_MoveSpeed * ts;
+			m_CamPosition.x() += m_MoveSpeed * ts;
 		
-		m_PerspectiveCamera->SetPosition(m_CamPosition);
-		m_Model->SetPosition(m_ModelPos);
+		m_PerspectiveCamera->SetPos(m_CamPosition);
+		m_Model->SetPos(m_ModelPos);
 		m_Model->SetAngle(m_ModelAngle);
 		m_light->SetPos(m_LightPos);
+		m_cube->SetPos(m_cubeposition);
+		m_cube->SetAngle(m_ModelAngle);
 
 
 		Hazel::RenderCommand::SetClearColor({ 0.2f,0.2f,0.2f,1.0f });
@@ -93,21 +98,24 @@ public:
 		std::vector<Hazel::Ref<Hazel::GameObject>> gameobjs;
 		gameobjs.push_back(m_light);
 		gameobjs.push_back(m_Model);
+		gameobjs.push_back(m_cube);
 
 		Hazel::Render::BeginScene(m_PerspectiveCamera, shader);
 		m_Texture->Bind();
-		shader->SetMat4("u_ModelMatrix", m_Model->GetModelMatrix());
+
 		Hazel::Render::Submit(gameobjs);
 		Hazel::Render::EndScene();
 	}
 private:
 	float fov;
-	glm::vec3 m_CamPosition;
-	glm::vec3 m_LightPos;
+	Eigen::Vector3f m_CamPosition;
+	Eigen::Vector3f m_LightPos;
 	float m_MoveSpeed = 1.0f;
 
-	glm::vec3 m_ModelPos;
-	float m_ModelAngle;
+	Eigen::Vector3f m_ModelPos;
+	Eigen::Vector3f m_ModelAngle;
+
+	Eigen::Vector3f m_cubeposition;
 
 	Hazel::Ref<Hazel::Light> m_light;
 
@@ -117,6 +125,8 @@ private:
 	Hazel::Ref<Hazel::PespectiveCamera> m_PerspectiveCamera;
 
 	Hazel::Ref<Hazel::Texture> m_Texture;
+
+	Hazel::Ref<Hazel::Cube> m_cube;
 
 	
 };

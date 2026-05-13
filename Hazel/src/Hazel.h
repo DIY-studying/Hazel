@@ -23,6 +23,12 @@
 #include "Hazel/Render/RenderCommand.h"
 //------------------------------------------
 
+//---component----------------------
+#include "Hazel/Render/gameobject/Component/CMesh.h"
+#include "Hazel/Render/gameobject/Component/CTransform.h"
+
+//---component----------------------
+
 //---profile--------------------------
 #include "Hazel/Debug/Instrumentor.h"
 

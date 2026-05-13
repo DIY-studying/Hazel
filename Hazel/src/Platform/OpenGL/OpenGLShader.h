@@ -1,7 +1,6 @@
 #pragma once
 #include "Hazel/Render/Shader.h"
 #include <string>
-#include <glm/ext/matrix_float4x4.hpp>
 #include "glad/glad.h"
 
 namespace Hazel
@@ -18,17 +17,17 @@ namespace Hazel
 		virtual void UnBind() const override;
 		virtual const std::string& GetName() const override;
 
-		virtual void SetMat4(const std::string& name, const glm::mat4& mat) override { SetUniformMat4(mat,name); }
-		virtual void SetFloat3(const std::string& name, const glm::vec3& mat) override { SetUniformFloat3(mat,name); };
+		virtual void SetMat4(const std::string& name, const Eigen::Matrix4f& mat) override { SetUniformMat4(mat,name); }
+		virtual void SetFloat3(const std::string& name, const Eigen::Vector3f& mat) override { SetUniformFloat3(mat,name); };
 		virtual void SetInt1(const std::string& name, int slot) override { SetUniformInt1(slot,name); }
 		//////////////////////////////////////////////////////////////////////////////////////
 
 		
 	private:
-		void SetUniformMat4(const glm::mat4& matrix, const std::string& name);
-		void SetUniformMat3(const glm::mat3& matrix, const std::string& name);
-		void SetUniformFloat3(const glm::vec3& vector, const std::string& name);
-		void SetUniformFloat4(const glm::vec4& vector, const std::string& name);
+		void SetUniformMat4(const Eigen::Matrix4f& matrix, const std::string& name);
+		void SetUniformMat3(const Eigen::Matrix3f& matrix, const std::string& name);
+		void SetUniformFloat3(const Eigen::Vector3f& vector, const std::string& name);
+		void SetUniformFloat4(const Eigen::Vector4f& vector, const std::string& name);
 		void SetUniformInt1(int slot, const std::string& name);
 
 		GLint GetLocation(GLuint renderID ,const std::string& name);

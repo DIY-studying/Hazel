@@ -6,17 +6,17 @@
 #include "Shader.h"
 #include "RenderCommand.h"
 #include "Hazel/Render/gameobject/Light.h"
-#include "gameobject/Component/Mesh.h"
+#include "gameobject/Component/Component.h"
 
 namespace Hazel
 {
 	// global data
 	struct  SceneData
 	{
-		std::vector<Ref<Mesh>> meshs;
+		std::vector<Ref<GameObject>> gameObjects;
 
-		glm::mat4 projectMatrix;
-		glm::mat4 viewMatrix;
+		Eigen::Matrix4f projectMatrix;
+		Eigen::Matrix4f viewMatrix;
 
 	};
 
